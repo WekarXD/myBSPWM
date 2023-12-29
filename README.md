@@ -9,7 +9,7 @@ Custom sccript to instal bspwm aparence
 Primero asegurte de ten er actualizado el sistema.
 Puedes actualizarlo con el siguiente comando
 ```
-sudo apt-get update && sudo parrot-upgrade -y
+sudo apt update && sudo parrot-upgrade -y
 ```
 
 ## 1.- Instalación
