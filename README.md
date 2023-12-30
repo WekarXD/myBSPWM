@@ -1,5 +1,5 @@
 # myBSPWM
-Custom sccript to instal bspwm aparence
+Script que realiza una instalacion de un entorno con BSPWM basado en el entorno de s4vitar.
 
 ### Probado
 - Parrot OS (5.3)
