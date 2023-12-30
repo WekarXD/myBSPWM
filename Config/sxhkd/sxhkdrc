@@ -4,11 +4,11 @@
 
 # terminal emulator
 super + Return
-	kitty
+	/opt/kitty/bin/kitty
 
-# program launcher
-super + @space
-	dmenu_run
+# program launcher (ROFI)
+super + d
+	rofi -show run
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -123,3 +123,14 @@ super + shift {Left,Down,Up,Right}
 #Custom Resize
 alt + super + {Left,Down,Up,Right}
     ~/.config/bspwm/scripts/bspwm_resize {west,south,north,east}
+
+
+# Custom Launchers App 
+
+# Firefox
+super + shift + f
+	firefox
+
+# BurpSuite
+super + shift + b
+	burpsuite

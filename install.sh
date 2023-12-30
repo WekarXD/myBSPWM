@@ -17,22 +17,20 @@ install_packages() {
 
     echo "Buscando Paquetes necesarios..."
 
-    PAKAGE_COMMON="kitty libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev build-essential git cmake cmake-data pkg-config python3-sphinx python3-packaging libuv1-dev libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev g++ clang git cmake pkg-config python3 python3-sphinx python3-packaging cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev libjsoncpp-dev libmpdclient-dev libuv1-dev libnl-genl-3-dev"
+    PAKAGE_COMMON=" rofi zsh zsh-autosuggestions zsh-syntax-highlighting zsh-autocomplete imagemagick feh libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev build-essential git cmake cmake-data pkg-config python3-sphinx python3-packaging libuv1-dev libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev g++ clang git cmake pkg-config python3 python3-sphinx python3-packaging cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev libjsoncpp-dev libmpdclient-dev libuv1-dev libnl-genl-3-dev libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev"
 
     for package in $PAKAGE_COMMON; do
-        if [ "$PAKAGE_MANAGER" == "apt" ] && ! dkpg -l | grep -q " $package "; then
+        if [ "$PAKAGE_MANAGER" == "apt" ] && ! dpkg -l | grep -q " $package "; then
             echo "Instalando $package..."
             sudo $PAKAGE_MANAGER install -y $package
             echo -e "[+] Se ha instalado $package"
             sleep 2
         else
             echo "[!] $package ya está instalado."
-            sleep 5
         fi
     done
     pip install -U sphinx
 }
-
 
 ruta=$(pwd)
 
@@ -47,20 +45,24 @@ git clone https://github.com/baskerville/bspwm.git
 git clone https://github.com/baskerville/sxhkd.git
 git clone --recursive https://github.com/polybar/polybar
 git clone https://github.com/ibhagwan/picom.git
+# Optener la ultima version de kitty
+kitty_last=$(curl -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release version " | awk '{ print $3 }')
+wget https://github.com/kovidgoyal/kitty/releases/latest/download/kitty-$kitty_last-x86_64.txz
+kitty_bin=$(ls | grep "kitty")
+
 #instalando bspwm
 echo "Instalando bspwm..."
 sleep 1.5
 cd ~/github/bspwm
 make -j$(nproc)
 sudo make install
-sleep 10
+sudo apt-get install bspwm -y
 # instalando sxhkd
 echo "Instalando sxhkd..."
 sleep 1.5
 cd ~/github/sxhkd
 make -j$(nproc)
 sudo make install
-sleep 10
 # Instalando Polybar
 echo "Instalando polybar..."
 sleep 1.5
@@ -70,17 +72,40 @@ cd build
 cmake ..
 make -j$(nproc)
 sudo make install
-sleep 10
-# Instalando Picom
-# echo "Instalando picom..."
-# sleep 1.5
-# cd ~/github/picom
-# git submodule update --init --recursive
-# meson --buildtype=release . build
-# ninja -C build
-# sudo ninja -C build install
-
+Instalando Picom
+echo "Instalando picom..."
+sleep 1.5
+cd ~/github/picom
+git submodule update --init --recursive
+meson --buildtype=release . build
+ninja -C build
+sudo ninja -C build install
+# Instalando la kitty
+sudo mkdir /opt/kitty
+sudo mv $kitty_bin /opt/kitty
+cd /opt/kitty/
+sudo 7z x $kitty_bin
+sudo rm $kitty_bin
+kitty_bin=$(ls | grep "kitty")
+sudo tar -xf $kitty_bin
+sudo rm $kitty_bin
+# Instalando las HackNerdFonts
+echo "Instalando las HNF"
+sleep 1.5
+sudo cp -v $ruta/fonts/HNF/* /usr/local/share/fonts/
+# Instalando las fuentes en Polybar
+sudo cp -v $ruta/Config/polybar/fonts/* /usr/share/fonts/truetype/
 # Copiando Archivos de Configuración
 echo "Configurando..."
 sleep 1.5
 cp -rv $ruta/Config/* ~/.config/
+sudo cp -rv $ruta/Config/kitty ~/.config/
+# Kitty Root
+sudo cp -rv $ruta/Config/kitty /root/.config/
+
+# Instalando Wallpapers
+skeep 1.5
+mkdir ~/Wallpaper
+cp -v $ruta/Wallpaper/* ~/Wallpaper
+echo "# WALLPAPER" >> ~/.config/bspwm/bspwmrc
+echo "feh --bg-fill ~/Wallpaper/death.jpg &" >> ~/.config/bspwm/bspwmrc
