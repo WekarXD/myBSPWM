@@ -45,6 +45,7 @@ git clone https://github.com/baskerville/bspwm.git
 git clone https://github.com/baskerville/sxhkd.git
 git clone --recursive https://github.com/polybar/polybar
 git clone https://github.com/ibhagwan/picom.git
+git clone https://github.com/Yucklys/polybar-nord-theme.git
 # Optener la ultima version de kitty
 kitty_last=$(curl -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release version " | awk '{ print $3 }')
 wget https://github.com/kovidgoyal/kitty/releases/latest/download/kitty-$kitty_last-x86_64.txz
@@ -105,6 +106,8 @@ cp -rv $ruta/Config/* ~/.config/
 sudo cp -rv $ruta/Config/kitty ~/.config/
 # Kitty Root
 sudo cp -rv $ruta/Config/kitty /root/.config/
+# Asignando permisos
+chmod u+x ~/.config/bspwm/bspwmrc
 
 # Instalando Wallpapers
 sleep 1.5

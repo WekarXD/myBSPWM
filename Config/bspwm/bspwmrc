@@ -1,5 +1,7 @@
 #! /bin/sh
 
+vmware-user-suid-wrapper &
+
 pgrep -x sxhkd > /dev/null || sxhkd &
 
 bspc monitor -d I II III IV V VI VII VIII IX X
@@ -16,4 +18,10 @@ bspc rule -a Chromium desktop='^2'
 bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
-vmware-user-suid-wrapper &
+
+# POLYBAR
+~/.config/polybar/launch.sh &
+
+# PICOM
+picom &
+bspc config border_width 0
