@@ -3,11 +3,12 @@
 # Funcion instalar paquetes necesarios
 install_packages() {
 
+    local PAKAGE_MANAGER
+
     PAKAGE_MANAGER="apt"
 
-
     #Actualiazar paquetes
-    if [ "$PAKAGE_MANAGER" == "apt" ]; then
+    if [ "$PAKAGE_MANAGER" == "apt-get" ]; then
         sudo $PAKAGE_MANAGER update
     fi
 
@@ -22,9 +23,9 @@ install_packages() {
     for package in $PAKAGE_COMMON; do
         if [ "$PAKAGE_MANAGER" == "apt" ] && ! dpkg -l | grep -q " $package "; then
             echo "Instalando $package..."
-            sudo $PAKAGE_MANAGER install -y $package
+            sudo $PAKAGE_MANAGER install -y --allow-downgrades $package
             echo -e "[+] Se ha instalado $package"
-            sleep 2
+            sleep 1
         else
             echo "[!] $package ya está instalado."
         fi
