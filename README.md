@@ -16,6 +16,7 @@ sudo apt update && sudo parrot-upgrade -y
 > Actualmtente en parrot os hay un error a la hora de hacer un upgrade nos da un error de kernel.
 > Para solucionar este error hay que borrar un paquete antes de hacer el upgrade.
 > Esta seria una manera de actualizar:
+
 ´´´
 sudo apt update 
 sudo apt remove realtek-rtl8188eus-dkms
