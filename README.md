@@ -17,15 +17,15 @@ sudo apt update && sudo parrot-upgrade -y
 > Para solucionar este error hay que borrar un paquete antes de hacer el upgrade.
 > Esta seria una manera de actualizar:
 
-´´´
-sudo apt update 
-sudo apt remove realtek-rtl8188eus-dkms
-sudo apt autoclean && sudo apt autoremove
-parrot-upgrade
-sudo parrot-upgrade
-sudo apt autoremove 
-reboot
-´´´
+>```
+>sudo apt update 
+>sudo apt remove realtek-rtl8188eus-dkms
+>sudo apt autoclean && sudo apt autoremove
+>parrot-upgrade
+>sudo parrot-upgrade
+>sudo apt autoremove 
+>reboot
+>```
 
 ## 1.- Instalación
 
