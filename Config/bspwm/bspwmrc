@@ -25,3 +25,4 @@ bspc rule -a Screenkey manage=off
 # PICOM
 picom &
 bspc config border_width 0
+

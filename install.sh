@@ -93,6 +93,13 @@ sudo rm $kitty_bin
 kitty_bin=$(ls | grep "kitty")
 sudo tar -xf $kitty_bin
 sudo rm $kitty_bin
+# Instalando p10k
+echo "Instalando P10K..."
+sleep 1.5
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
+echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+# Instalando p10k root
+sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
 # Instalando las HackNerdFonts
 echo "Instalando las HNF"
 sleep 1.5
@@ -106,6 +113,15 @@ cp -rv $ruta/Config/* ~/.config/
 sudo cp -rv $ruta/Config/kitty ~/.config/
 # Kitty Root
 sudo cp -rv $ruta/Config/kitty /root/.config/
+# Copia de configuracion de .p10k.zsh y .zshrc
+rm -rf ~/.zshrc
+cp -v $ruta/zshrc ~/.zshrc
+cp -v $ruta/p10k.zsh ~/.p10k.zsh
+sudo cp -v $ruta/p10k.zsh-root /root/.p10k.zsh
+# Cambiando de SHELL a zsh
+chsh -s /usr/bin/zsh
+sudo usermod --shell /usr/bin/zsh root
+sudo ln -s -fv ~/.zshrc /root/.zshrc
 # Asignando permisos
 chmod u+x ~/.config/bspwm/bspwmrc
 
