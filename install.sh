@@ -18,7 +18,7 @@ install_packages() {
 
     echo "Buscando Paquetes necesarios..."
 
-    PAKAGE_COMMON=" rofi zsh zsh-autosuggestions zsh-syntax-highlighting zsh-autocomplete imagemagick feh libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev build-essential git cmake cmake-data pkg-config python3-packaging libcairo2-dev libxcb1-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev g++ clang python3 libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev libjsoncpp-dev libmpdclient-dev libuv1-dev libnl-genl-3-dev libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libpcre2-dev libpcre3 libpcre3-dev libpixman-1-dev libx11-xcb-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-present-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev libjs-sphinxdoc=5.3.0-4 python3-sphinx"
+    PAKAGE_COMMON=" rofi zsh zsh-autosuggestions zsh-syntax-highlighting zsh-autocomplete imagemagick feh locate libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev build-essential git cmake cmake-data pkg-config python3-packaging libcairo2-dev libxcb1-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev g++ clang python3 libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev libjsoncpp-dev libmpdclient-dev libuv1-dev libnl-genl-3-dev libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libpcre2-dev libpcre3 libpcre3-dev libpixman-1-dev libx11-xcb-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-present-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev libjs-sphinxdoc=5.3.0-4 python3-sphinx"
 
     for package in $PAKAGE_COMMON; do
         if [ "$PAKAGE_MANAGER" == "apt" ] && ! dpkg -l | grep -q " $package "; then
@@ -46,6 +46,14 @@ git clone https://github.com/baskerville/sxhkd.git
 git clone --recursive https://github.com/polybar/polybar
 git clone https://github.com/ibhagwan/picom.git
 git clone https://github.com/Yucklys/polybar-nord-theme.git
+# Optener la ultima version de bat
+bat_last=$(curl -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
+wget https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb
+bat_bin=$(ls | grep "bat")
+# Optener la ultima version de lsd
+lsd_last=$(curl -L https://github.com/lsd-rs/lsd/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
+wget https://github.com/lsd-rs/lsd/releases/latest/download/lsd_$lsd_last\_amd64.deb
+lsd_bin=$(ls | grep "lsd")
 # Optener la ultima version de kitty
 kitty_last=$(curl -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release version " | awk '{ print $3 }')
 wget https://github.com/kovidgoyal/kitty/releases/latest/download/kitty-$kitty_last-x86_64.txz
@@ -93,6 +101,12 @@ sudo rm $kitty_bin
 kitty_bin=$(ls | grep "kitty")
 sudo tar -xf $kitty_bin
 sudo rm $kitty_bin
+#Instalando bat
+cd ~/github
+dpkg -i $bat_bin
+#Instalando lsd
+cd ~/github
+dpkg -i $lsd_bin
 # Instalando p10k
 echo "Instalando P10K..."
 sleep 1.5
@@ -131,3 +145,28 @@ mkdir ~/Wallpaper
 cp -v $ruta/Wallpaper/* ~/Wallpaper
 echo "# WALLPAPER" >> ~/.config/bspwm/bspwmrc
 echo "feh --bg-fill ~/Wallpaper/death.jpg &" >> ~/.config/bspwm/bspwmrc
+
+# Eliminando restos
+rm -rf ~/github
+rm -rf $ruta
+
+updatedb
+
+# Mensaje de instalado
+notify-send -e "BSPWM Instalado
+Hay que reiniciar y cambiar el entorno a bspwm"
+
+while true; do
+    echo -en "[?] Es necesario reiniciar el sistema. ¿Deseas reiniciar ahora?"
+    read -r
+    REPLY=${REPLY:-"y"}
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo -e "[+] Reiniciando el sistema..."
+        sleep -1
+        sudo reboot
+    elif [[ $REPLY =~^[Nn]$ ]]; then
+        exit 0
+    else
+        echo -e "[!] Respuesta invalida, responda otra vez."
+    fi
+done
