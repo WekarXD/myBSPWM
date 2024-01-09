@@ -103,10 +103,10 @@ sudo tar -xf $kitty_bin
 sudo rm $kitty_bin
 #Instalando bat
 cd ~/github
-dpkg -i $bat_bin
+sudo dpkg -i $bat_bin
 #Instalando lsd
 cd ~/github
-dpkg -i $lsd_bin
+sudo dpkg -i $lsd_bin
 # Instalando p10k
 echo "Instalando P10K..."
 sleep 1.5
@@ -149,8 +149,6 @@ echo "feh --bg-fill ~/Wallpaper/death.jpg &" >> ~/.config/bspwm/bspwmrc
 # Eliminando restos
 rm -rf ~/github
 rm -rf $ruta
-
-updatedb
 
 # Mensaje de instalado
 notify-send -e "BSPWM Instalado
