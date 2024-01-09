@@ -162,7 +162,7 @@ while true; do
         echo -e "[+] Reiniciando el sistema..."
         sleep -1
         sudo reboot
-    elif [[ $REPLY =~^[Nn]$ ]]; then
+    elif [[ $REPLY =~ ^[Nn]$ ]]; then
         exit 0
     else
         echo -e "[!] Respuesta invalida, responda otra vez."
