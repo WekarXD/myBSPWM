@@ -136,8 +136,12 @@ sudo cp -v $ruta/p10k.zsh-root /root/.p10k.zsh
 chsh -s /usr/bin/zsh
 sudo usermod --shell /usr/bin/zsh root
 sudo ln -s -fv ~/.zshrc /root/.zshrc
+
 # Asignando permisos
 chmod u+x ~/.config/bspwm/bspwmrc
+chmod +x ~/.config/bin/ethernet_status.sh
+chmod +x ~/.config/bin/htb_status.sh
+chmod +x ~/.config/bin/htb_target.sh
 
 # Instalando Wallpapers
 sleep 1.5
