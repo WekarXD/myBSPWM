@@ -10,6 +10,8 @@ CYAN="\e[36m"
 WHITE="\e[97m"
 ENDCOLOR="\e[0m"
 
+SILENT="2>/dev/null >/dev/null"
+
 # Funcion instalar paquetes necesarios
 install_packages() {
 
@@ -26,7 +28,7 @@ install_packages() {
 
     # Comando para instalar los paquetes necesarios
 
-    echo "${BLUE}Buscando Paquetes necesarios...${ENDCOLOR}"
+    echo -e "${BLUE}Buscando Paquetes necesarios...${ENDCOLOR}"
 
     PAKAGE_COMMON=" rofi zsh zsh-autosuggestions zsh-syntax-highlighting zsh-autocomplete npm flameshot ranger imagemagick feh locate libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev build-essential git cmake cmake-data pkg-config python3-packaging libcairo2-dev libxcb1-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev g++ clang python3 libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev libjsoncpp-dev libmpdclient-dev libuv1-dev libnl-genl-3-dev libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libpcre2-dev libpcre3 libpcre3-dev libpixman-1-dev libx11-xcb-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-present-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev libjs-sphinxdoc=5.3.0-4 python3-sphinx"
 
@@ -34,7 +36,7 @@ install_packages() {
         if [ "$PAKAGE_MANAGER" == "apt-get" ] && ! dpkg -l | grep -q " $package "; then
             echo -e "${BLUE}[ ]Instalando ${MAGENTA}$package...${ENDCOLOR}"
             sudo $PAKAGE_MANAGER install -yqq --allow-downgrades $package 2>/dev/null >/dev/null
-            echo -e "${GEERN} [+] Se ha instalado $package${ENDCOLOR}"
+            echo -e "${GEERN}[+] Se ha instalado $package${ENDCOLOR}"
             sleep 1
         else
             echo -e "${RED}[!] $package ya está instalado.${ENDCOLOR}"
@@ -51,22 +53,22 @@ mkdir ~/github
 cd ~/github
 echo -e "${BLUE}Instalando Repositorios...${ENDCOLOR}"
 sleep 1.5
-git clone https://github.com/baskerville/bspwm.git
-git clone https://github.com/baskerville/sxhkd.git
-git clone --recursive https://github.com/polybar/polybar
-git clone https://github.com/ibhagwan/picom.git
-git clone https://github.com/Yucklys/polybar-nord-theme.git
+git clone https://github.com/baskerville/bspwm.git $SILENT
+git clone https://github.com/baskerville/sxhkd.git $SILENT
+git clone --recursive https://github.com/polybar/polybar $SILENT
+git clone https://github.com/ibhagwan/picom.git $SILENT
+git clone https://github.com/Yucklys/polybar-nord-theme.git $SILENT
 # Optener la ultima version de bat
 bat_last=$(curl -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
-wget https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb
+wget https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb $SILENT
 bat_bin=$(ls | grep "bat")
 # Optener la ultima version de lsd
 lsd_last=$(curl -L https://github.com/lsd-rs/lsd/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
-wget https://github.com/lsd-rs/lsd/releases/latest/download/lsd_$lsd_last\_amd64.deb
+wget https://github.com/lsd-rs/lsd/releases/latest/download/lsd_$lsd_last\_amd64.deb $SILENT
 lsd_bin=$(ls | grep "lsd")
 # Optener la ultima version de kitty
 kitty_last=$(curl -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release version " | awk '{ print $3 }')
-wget https://github.com/kovidgoyal/kitty/releases/latest/download/kitty-$kitty_last-x86_64.txz
+wget https://github.com/kovidgoyal/kitty/releases/latest/download/kitty-$kitty_last-x86_64.txz $SILENT
 kitty_bin=$(ls | grep "kitty")
 
 #instalando bspwm
@@ -74,72 +76,72 @@ echo -en "${BLUE}Instalando bspwm...    ${ENDCOLOR}"
 sleep 1.5
 cd ~/github/bspwm
 make -j$(nproc)
-sudo make install
-sudo apt-get install bspwm -y
+sudo make install $SILENT
+sudo apt-get install bspwm -yqq $SILENT
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # instalando sxhkd
 echo -en "${BLUE}Instalando sxhkd...    ${ENDCOLOR}"
 sleep 1.5
 cd ~/github/sxhkd
-make -j$(nproc)
-sudo make install
+make -j$(nproc) $SILENT
+sudo make install $SILENT
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando Polybar
 echo -en "${BLUE}Instalando polybar...    ${ENDCOLOR}"
 sleep 1.5
 cd ~/github/polybar
-mkdir build
+mkdir build 
 cd build
-cmake ..
-make -j$(nproc)
-sudo make install
+cmake .. $SILENT
+make -j$(nproc) $SILENT
+sudo make install $SILENT
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando Picom
 echo -en "${BLUE}Instalando picom...    ${ENDCOLOR}"
 sleep 1.5
 cd ~/github/picom
-git submodule update --init --recursive
-meson --buildtype=release . build
-ninja -C build
-sudo ninja -C build install
+git submodule update --init --recursive $SILENT
+meson --buildtype=release . build $SILENT
+ninja -C build $SILENT
+sudo ninja -C build install $SILENT
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando la kitty
 echo -en "${BLUE}Instalando kitty...${ENDCOLOR}"
 sleep 1.5
 cd ~/github
-sudo mkdir /opt/kitty
+sudo mkdir /opt/kitty 
 sudo mv $kitty_bin /opt/kitty
 cd /opt/kitty/
-sudo 7z x $kitty_bin
+sudo 7z x $kitty_bin $SILENT
 sudo rm $kitty_bin
 kitty_bin=$(ls | grep "kitty")
-sudo tar -xf $kitty_bin
+sudo tar -xf $kitty_bin $SILENT
 sudo rm $kitty_bin
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 #Instalando bat
 echo -en "${BLUE}Instalando Batcat...    ${ENDCOLOR}"
 cd ~/github
-sudo dpkg -i $bat_bin
+sudo dpkg -i $bat_bin $SILENT
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 #Instalando lsd
 echo -en "${BLUE}Instalando LSD...    ${ENDCOLOR}"
 cd ~/github
-sudo dpkg -i $lsd_bin
+sudo dpkg -i $lsd_bin $SILENT
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando p10k
 echo -en "${BLUE}Instalando P10K...    ${ENDCOLOR}"
 sleep 1.5
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k $SILENT
 echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
 # Instalando p10k root
-sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
+sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k $SILENT
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando las HackNerdFonts
@@ -168,7 +170,7 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 echo -en "${BLUE}Instalando plugins ZSH...    ${ENDCOLOR}"
 sudo mkdir /usr/share/zsh-sudo
 cd /usr/share/zsh-sudo
-sudo wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
+sudo wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh $SILENT
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Cambiando de SHELL a ZSH
@@ -186,7 +188,7 @@ chmod +x ~/.config/bin/htb_target.sh
 
 # Instalando Nvim + Nvchad
 echo -en "${BLUE}Instalando Nvchad...    ${ENDCOLOR}"
-sudo apt remove neovim -y
+sudo apt remove neovim -y $SILENT
 sudo rm -rf ~/.config/nvim
 sudo rm -rf ~/.local/share/nvim
 cd /opt/
