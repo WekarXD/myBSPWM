@@ -32,7 +32,7 @@ install_packages() {
 
     for package in $PAKAGE_COMMON; do
         if [ "$PAKAGE_MANAGER" == "apt-get" ] && ! dpkg -l | grep -q " $package "; then
-            echo -e "${BLUE}[ ]Instalando ${PURPLE}$package...${ENDCOLOR}"
+            echo -e "${BLUE}[ ]Instalando ${MAGENTA}$package...${ENDCOLOR}"
             sudo $PAKAGE_MANAGER install -yqq --allow-downgrades $package 2>/dev/null >/dev/null
             echo -e "${GEERN} [+] Se ha instalado $package${ENDCOLOR}"
             sleep 1
