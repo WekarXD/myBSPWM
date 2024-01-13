@@ -12,13 +12,12 @@ CYAN="\e[36m"
 WHITE="\e[97m"
 ENDCOLOR="\e[0m"
 
-
 # Funcion instalar paquetes necesarios
 install_packages() {
 
     local PAKAGE_MANAGER
 
-    PAKAGE_MANAGER="apt"
+    PAKAGE_MANAGER="apt-get"
 
     #Actualiazar paquetes
     if [ "$PAKAGE_MANAGER" == "apt-get" ]; then
@@ -36,7 +35,7 @@ install_packages() {
     for package in $PAKAGE_COMMON; do
         if [ "$PAKAGE_MANAGER" == "apt" ] && ! dpkg -l | grep -q " $package "; then
             echo -e "${BLUE}[ ]Instalando ${PURPLE}$package...${ENDCOLOR}"
-            sudo $PAKAGE_MANAGER install -y -q --allow-downgrades $package
+            sudo $PAKAGE_MANAGER install -y -qq --allow-downgrades $package
             echo -e "${GEERN} [+] Se ha instalado $package${ENDCOLOR}"
             sleep 1
         else
