@@ -1,5 +1,7 @@
 #!/bin/bash
 
+install.sh &>/dev/null
+
 # COLORS
 RED="\e[31m"
 GREEN="\e[32m"
@@ -33,8 +35,8 @@ install_packages() {
 
     for package in $PAKAGE_COMMON; do
         if [ "$PAKAGE_MANAGER" == "apt" ] && ! dpkg -l | grep -q " $package "; then
-            echo -e "${BLUE}Instalando ${PURPLE}$package...${ENDCOLOR}"
-            sudo $PAKAGE_MANAGER install -y --allow-downgrades $package
+            echo -e "${BLUE}[ ]Instalando ${PURPLE}$package...${ENDCOLOR}"
+            sudo $PAKAGE_MANAGER install -y -q --allow-downgrades $package
             echo -e "${GEERN} [+] Se ha instalado $package${ENDCOLOR}"
             sleep 1
         else
