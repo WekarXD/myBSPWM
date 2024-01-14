@@ -51,14 +51,13 @@ install_packages
 
 mkdir ~/github
 cd ~/github
-echo -en "${BLUE}Instalando Repositorios...${ENDCOLOR}"
+echo -en "${BLUE}Descargando Repositorios... ${ENDCOLOR}"
 sleep 1.5
 git clone -q https://github.com/baskerville/bspwm.git
 git clone -q https://github.com/baskerville/sxhkd.git
 git clone -q --recursive https://github.com/polybar/polybar
 git clone -q https://github.com/ibhagwan/picom.git
 git clone -q https://github.com/Yucklys/polybar-nord-theme.git
-echo -e "${GREEN}Listo.${ENDCOLOR}"
 # Optener la ultima version de bat
 bat_last=$(curl -s -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
 wget -q https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb
@@ -71,6 +70,8 @@ lsd_bin=$(ls | grep "lsd")
 kitty_last=$(curl -s -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release version " | awk '{ print $3 }')
 wget -q https://github.com/kovidgoyal/kitty/releases/latest/download/kitty-$kitty_last-x86_64.txz
 kitty_bin=$(ls | grep "kitty")
+echo -e "${GREEN}Listo.${ENDCOLOR}"
+sleep 1.5
 
 #instalando bspwm
 echo -en "${BLUE}Instalando bspwm...${ENDCOLOR}"
@@ -78,7 +79,7 @@ sleep 1.5
 cd ~/github/bspwm
 make -s -j$(nproc)
 sudo make install -s
-sudo apt-get install bspwm -yqq ${$SILENT}
+sudo apt-get install bspwm -yqq ${SILENT}
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # instalando sxhkd
@@ -95,7 +96,7 @@ sleep 1.5
 cd ~/github/polybar
 mkdir build 
 cd build
-cmake ..
+cmake .. --quiet
 make -s -j$(nproc)
 sudo make install -s
 echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -104,10 +105,10 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 echo -en "${BLUE}Instalando picom...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/picom
-git submodule update --init --recursive 
+git submodule update --init --recursive --quiet
 meson --buildtype=release . build 
-ninja -C build 
-sudo ninja -C build install 
+ninja -C build --quiet
+sudo ninja -C build install --quiet
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando la kitty
@@ -117,7 +118,7 @@ cd ~/github
 sudo mkdir /opt/kitty 
 sudo mv $kitty_bin /opt/kitty
 cd /opt/kitty/
-sudo 7z x $kitty_bin 
+sudo 7z x $kitty_bin &>/dev/null
 sudo rm $kitty_bin
 kitty_bin=$(ls | grep "kitty")
 sudo tar -xf $kitty_bin 
@@ -127,13 +128,13 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 #Instalando bat
 echo -en "${BLUE}Instalando Batcat...${ENDCOLOR}"
 cd ~/github
-sudo dpkg -i $bat_bin 
+sudo dpkg -i $bat_bin &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 #Instalando lsd
 echo -en "${BLUE}Instalando LSD...${ENDCOLOR}"
 cd ~/github
-sudo dpkg -i $lsd_bin 
+sudo dpkg -i $lsd_bin &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando p10k
@@ -142,29 +143,29 @@ sleep 1.5
 git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
 echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
 # Instalando p10k root
-sudo git clone-q  --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
+sudo git clone -q  --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando las HackNerdFonts
 echo -en "${BLUE}Instalando las Fuentes...    ${ENDCOLOR}"
 sleep 1.5
-sudo cp -v $ruta/fonts/HNF/* /usr/local/share/fonts/
+sudo cp -v $ruta/fonts/HNF/* /usr/local/share/fonts/ &>/dev/null
 # Instalando las fuentes en Polybar
-sudo cp -v $ruta/Config/polybar/fonts/* /usr/share/fonts/truetype/
+sudo cp -v $ruta/Config/polybar/fonts/* /usr/share/fonts/truetype/ &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Copiando Archivos de Configuración
 echo -en "${BLUE}Copiando archivos de configuracion...    ${ENDCOLOR}"
 sleep 1.5
-cp -rv $ruta/Config/* ~/.config/
-sudo cp -rv $ruta/Config/kitty ~/.config/
+cp -rv $ruta/Config/* ~/.config/ &>/dev/null
+sudo cp -rv $ruta/Config/kitty ~/.config/ &>/dev/null
 # Kitty Root
-sudo cp -rv $ruta/Config/kitty /root/.config/
+sudo cp -rv $ruta/Config/kitty /root/.config/ &>/dev/null
 # Copia de configuracion de .p10k.zsh y .zshrc
 rm -rf ~/.zshrc
-cp -v $ruta/zshrc ~/.zshrc
-cp -v $ruta/p10k.zsh ~/.p10k.zsh
-sudo cp -v $ruta/p10k.zsh-root /root/.p10k.zsh
+cp -v $ruta/zshrc ~/.zshrc &>/dev/null
+cp -v $ruta/p10k.zsh ~/.p10k.zsh &>/dev/null
+sudo cp -v $ruta/p10k.zsh-root /root/.p10k.zsh &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Plugins ZSH
