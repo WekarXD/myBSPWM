@@ -60,54 +60,54 @@ git clone -q https://github.com/ibhagwan/picom.git
 git clone -q https://github.com/Yucklys/polybar-nord-theme.git
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 # Optener la ultima version de bat
-bat_last=$(curl -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
-wget https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb $SILENT
+bat_last=$(curl -s -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
+wget -q https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb
 bat_bin=$(ls | grep "bat")
 # Optener la ultima version de lsd
-lsd_last=$(curl -L https://github.com/lsd-rs/lsd/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
-wget https://github.com/lsd-rs/lsd/releases/latest/download/lsd_$lsd_last\_amd64.deb $SILENT
+lsd_last=$(curl -s -L https://github.com/lsd-rs/lsd/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
+wget -q https://github.com/lsd-rs/lsd/releases/latest/download/lsd_$lsd_last\_amd64.deb
 lsd_bin=$(ls | grep "lsd")
 # Optener la ultima version de kitty
-kitty_last=$(curl -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release version " | awk '{ print $3 }')
-wget https://github.com/kovidgoyal/kitty/releases/latest/download/kitty-$kitty_last-x86_64.txz $SILENT
+kitty_last=$(curl -s -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release version " | awk '{ print $3 }')
+wget -q https://github.com/kovidgoyal/kitty/releases/latest/download/kitty-$kitty_last-x86_64.txz
 kitty_bin=$(ls | grep "kitty")
 
 #instalando bspwm
-echo -en "${BLUE}Instalando bspwm...    ${ENDCOLOR}"
+echo -en "${BLUE}Instalando bspwm...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/bspwm
 make -j$(nproc)
-sudo make install $SILENT
+sudo make install --quiet
 sudo apt-get install bspwm -yqq $SILENT
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # instalando sxhkd
-echo -en "${BLUE}Instalando sxhkd...    ${ENDCOLOR}"
+echo -en "${BLUE}Instalando sxhkd...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/sxhkd
 make -j$(nproc) $SILENT
-sudo make install $SILENT
+sudo make install --quiet
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando Polybar
-echo -en "${BLUE}Instalando polybar...    ${ENDCOLOR}"
+echo -en "${BLUE}Instalando polybar...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/polybar
 mkdir build 
 cd build
-cmake .. $SILENT
-make -j$(nproc) $SILENT
-sudo make install $SILENT
+cmake ..
+make -j$(nproc)
+sudo make install --quiet
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando Picom
-echo -en "${BLUE}Instalando picom...    ${ENDCOLOR}"
+echo -en "${BLUE}Instalando picom...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/picom
-git submodule update --init --recursive $SILENT
-meson --buildtype=release . build $SILENT
-ninja -C build $SILENT
-sudo ninja -C build install $SILENT
+git submodule update --init --recursive 
+meson --buildtype=release . build 
+ninja -C build 
+sudo ninja -C build install 
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando la kitty
@@ -117,23 +117,23 @@ cd ~/github
 sudo mkdir /opt/kitty 
 sudo mv $kitty_bin /opt/kitty
 cd /opt/kitty/
-sudo 7z x $kitty_bin $SILENT
+sudo 7z x $kitty_bin 
 sudo rm $kitty_bin
 kitty_bin=$(ls | grep "kitty")
-sudo tar -xf $kitty_bin $SILENT
+sudo tar -xf $kitty_bin 
 sudo rm $kitty_bin
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 #Instalando bat
-echo -en "${BLUE}Instalando Batcat...    ${ENDCOLOR}"
+echo -en "${BLUE}Instalando Batcat...${ENDCOLOR}"
 cd ~/github
-sudo dpkg -i $bat_bin $SILENT
+sudo dpkg -i $bat_bin 
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 #Instalando lsd
-echo -en "${BLUE}Instalando LSD...    ${ENDCOLOR}"
+echo -en "${BLUE}Instalando LSD...${ENDCOLOR}"
 cd ~/github
-sudo dpkg -i $lsd_bin $SILENT
+sudo dpkg -i $lsd_bin 
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando p10k
@@ -171,7 +171,7 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 echo -en "${BLUE}Instalando plugins ZSH...    ${ENDCOLOR}"
 sudo mkdir /usr/share/zsh-sudo
 cd /usr/share/zsh-sudo
-sudo wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh $SILENT
+sudo wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh 
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Cambiando de SHELL a ZSH
@@ -189,7 +189,7 @@ chmod +x ~/.config/bin/htb_target.sh
 
 # Instalando Nvim + Nvchad
 echo -en "${BLUE}Instalando Nvchad...    ${ENDCOLOR}"
-sudo apt remove neovim -y $SILENT
+sudo apt remove neovim -y 
 sudo rm -rf ~/.config/nvim
 sudo rm -rf ~/.local/share/nvim
 cd /opt/
