@@ -34,7 +34,7 @@ install_packages() {
 
     for package in $PAKAGE_COMMON; do
         if [ "$PAKAGE_MANAGER" == "apt-get" ] && ! dpkg -l | grep -q " $package "; then
-            echo -e "${BLUE}[ ]Instalando ${MAGENTA}$package...${ENDCOLOR}"
+            echo -e "${BLUE}[ ] Instalando ${MAGENTA}$package...${ENDCOLOR}"
             sudo $PAKAGE_MANAGER install -yqq --allow-downgrades $package 2>/dev/null >/dev/null
             echo -e "${GEERN}[+] Se ha instalado $package${ENDCOLOR}"
             sleep 1
@@ -51,13 +51,14 @@ install_packages
 
 mkdir ~/github
 cd ~/github
-echo -e "${BLUE}Instalando Repositorios...${ENDCOLOR}"
+echo -en "${BLUE}Instalando Repositorios...${ENDCOLOR}"
 sleep 1.5
-git clone https://github.com/baskerville/bspwm.git $SILENT
-git clone https://github.com/baskerville/sxhkd.git $SILENT
-git clone --recursive https://github.com/polybar/polybar $SILENT
-git clone https://github.com/ibhagwan/picom.git $SILENT
-git clone https://github.com/Yucklys/polybar-nord-theme.git $SILENT
+git clone -q https://github.com/baskerville/bspwm.git
+git clone -q https://github.com/baskerville/sxhkd.git
+git clone -q --recursive https://github.com/polybar/polybar
+git clone -q https://github.com/ibhagwan/picom.git
+git clone -q https://github.com/Yucklys/polybar-nord-theme.git
+echo -e "${GREEN}Listo.${ENDCOLOR}"
 # Optener la ultima version de bat
 bat_last=$(curl -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
 wget https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb $SILENT
@@ -138,10 +139,10 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 # Instalando p10k
 echo -en "${BLUE}Instalando P10K...    ${ENDCOLOR}"
 sleep 1.5
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k $SILENT
+git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
 echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
 # Instalando p10k root
-sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k $SILENT
+sudo git clone-q  --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando las HackNerdFonts
@@ -200,14 +201,16 @@ sudo cp -r ~/.config/nvim /root/.config
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Install fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+echo -en "${BLUE}Instalando fzf...${ENDCOLOR}"
+git clone -q --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --all
 
-sudo git clone --depth 1 https://github.com/junegunn/fzf.git /root/.fzf
+sudo git clone -q --depth 1 https://github.com/junegunn/fzf.git /root/.fzf
 sudo /root/.fzf/install --all
+echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Configuramos el tema Nord de Rofi:
-echo -en "${BLUE}Instalando Rofi...    ${ENDCOLOR}"
+echo -en "${BLUE}Instalando Rofi...${ENDCOLOR}"
 sleep 1.5
 mkdir -p ~/.config/rofi/themes
 cp $ruta/rofi/nord.rasi ~/.config/rofi/themes/
