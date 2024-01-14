@@ -79,7 +79,7 @@ sleep 1.5
 cd ~/github/bspwm
 make -s -j$(nproc)
 sudo make install -s
-sudo apt-get install bspwm -yqq ${SILENT}
+sudo apt-get install bspwm -yqq 2>/dev/null >/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # instalando sxhkd
@@ -96,7 +96,7 @@ sleep 1.5
 cd ~/github/polybar
 mkdir build 
 cd build
-cmake .. --quiet
+cmake --quiet ..
 make -s -j$(nproc)
 sudo make install -s
 echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -106,7 +106,7 @@ echo -en "${BLUE}Instalando picom...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/picom
 git submodule update --init --recursive --quiet
-meson --buildtype=release . build 
+meson --quiet --buildtype=release . build 
 ninja -C build --quiet
 sudo ninja -C build install --quiet
 echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -172,14 +172,14 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 echo -en "${BLUE}Instalando plugins ZSH...    ${ENDCOLOR}"
 sudo mkdir /usr/share/zsh-sudo
 cd /usr/share/zsh-sudo
-sudo wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh 
+sudo -q  wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh 
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Cambiando de SHELL a ZSH
-echo -en "${BLUE}${ENDCOLOR}"
+echo -en "${BLUE}Cambiando terminal a ZSH${ENDCOLOR}"
 chsh -s /usr/bin/zsh
 sudo usermod --shell /usr/bin/zsh root
-sudo ln -s -fv ~/.zshrc /root/.zshrc
+sudo ln -s -fv ~/.zshrc /root/.zshrc &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Asignando permisos
@@ -189,16 +189,16 @@ chmod +x ~/.config/bin/htb_status.sh
 chmod +x ~/.config/bin/htb_target.sh
 
 # Instalando Nvim + Nvchad
-echo -en "${BLUE}Instalando Nvchad...    ${ENDCOLOR}"
-sudo apt remove neovim -y 
+echo -en "${BLUE}Instalando Nvchad...${ENDCOLOR}"
+sudo apt remove neovim -y 2>/dev/null >/dev/null
 sudo rm -rf ~/.config/nvim
 sudo rm -rf ~/.local/share/nvim
 cd /opt/
-sudo wget -P /opt/ https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+sudo -q  wget -P /opt/ https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
 sudo tar xzvf nvim-linux64.tar.gz
 rm -f nvim-linux64.tar.gz
-git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
-sudo cp -r ~/.config/nvim /root/.config
+git clone -q https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
+sudo cp -r ~/.config/nvim /root/.config &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Install fzf
@@ -221,7 +221,7 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 # Instalando Wallpapers
 sleep 1.5
 mkdir ~/Wallpaper
-cp -v $ruta/Wallpaper/* ~/Wallpaper
+cp -v $ruta/Wallpaper/* ~/Wallpaper &>/dev/null
 echo "# WALLPAPER" >> ~/.config/bspwm/bspwmrc
 echo "feh --bg-fill ~/Wallpaper/death.jpg &" >> ~/.config/bspwm/bspwmrc
 
