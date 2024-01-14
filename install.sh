@@ -76,17 +76,17 @@ kitty_bin=$(ls | grep "kitty")
 echo -en "${BLUE}Instalando bspwm...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/bspwm
-make -j$(nproc)
-sudo make install --quiet
-sudo apt-get install bspwm -yqq $SILENT
+make -s -j$(nproc)
+sudo make install -s
+sudo apt-get install bspwm -yqq ${$SILENT}
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # instalando sxhkd
 echo -en "${BLUE}Instalando sxhkd...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/sxhkd
-make -j$(nproc) $SILENT
-sudo make install --quiet
+make -s -j$(nproc)
+sudo make install -s
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando Polybar
@@ -96,8 +96,8 @@ cd ~/github/polybar
 mkdir build 
 cd build
 cmake ..
-make -j$(nproc)
-sudo make install --quiet
+make -s -j$(nproc)
+sudo make install -s
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando Picom
