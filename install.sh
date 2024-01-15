@@ -137,15 +137,6 @@ cd ~/github
 sudo dpkg -i $lsd_bin &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
-# Instalando p10k
-echo -en "${BLUE}Instalando P10K...    ${ENDCOLOR}"
-sleep 1.5
-git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
-echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
-# Instalando p10k root
-sudo git clone -q  --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
-echo -e "${GREEN}Listo.${ENDCOLOR}"
-
 # Instalando las HackNerdFonts
 echo -en "${BLUE}Instalando las Fuentes...    ${ENDCOLOR}"
 sleep 1.5
@@ -168,11 +159,23 @@ cp -v $ruta/p10k.zsh ~/.p10k.zsh &>/dev/null
 sudo cp -v $ruta/p10k.zsh-root /root/.p10k.zsh &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
+# Instalando p10k
+echo -en "${BLUE}Instalando P10K...    ${ENDCOLOR}"
+sleep 1.5
+git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
+echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+# Instalando p10k root
+sudo git clone -q  --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
+echo -e "${GREEN}Listo.${ENDCOLOR}"
+
 # Plugins ZSH
 echo -en "${BLUE}Instalando plugins ZSH...    ${ENDCOLOR}"
 sudo mkdir /usr/share/zsh-sudo
 cd /usr/share/zsh-sudo
-sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh 
+sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
+sudo mkdir /usr/share/zsh-autocomplete
+cd /usr/share/zsh-autocomplete
+sudo wget -q https://raw.githubusercontent.com/marlonrichert/zsh-autocomplete/main/zsh-autocomplete.plugin.zsh
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Cambiando de SHELL a ZSH
