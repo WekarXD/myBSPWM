@@ -20,16 +20,15 @@ install_packages() {
     PAKAGE_MANAGER="apt-get"
 
     #Actualiazar paquetes
+    echo -en "${BLUE}[ ] Actualizando la lista de paquetes...${ENDCOLOR}"
     if [ "$PAKAGE_MANAGER" == "apt-get" ]; then
-        sudo $PAKAGE_MANAGER update
+        sudo $PAKAGE_MANAGER update -qq
+        echo -e "${GREEN}Listo.${ENDCOLOR}"
     fi
-
     sleep 3
 
     # Comando para instalar los paquetes necesarios
-
     echo -e "${BLUE}Buscando Paquetes necesarios...${ENDCOLOR}"
-
     PAKAGE_COMMON=" rofi zsh zsh-autosuggestions zsh-syntax-highlighting zsh-autocomplete npm flameshot ranger imagemagick feh locate libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev build-essential git cmake cmake-data pkg-config python3-packaging libcairo2-dev libxcb1-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev g++ clang python3 libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev libjsoncpp-dev libmpdclient-dev libuv1-dev libnl-genl-3-dev libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libpcre2-dev libpcre3 libpcre3-dev libpixman-1-dev libx11-xcb-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-present-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev libjs-sphinxdoc=5.3.0-4 python3-sphinx"
 
     for package in $PAKAGE_COMMON; do
@@ -96,7 +95,7 @@ sleep 1.5
 cd ~/github/polybar
 mkdir build 
 cd build
-cmake --quiet ..
+cmake .. &>/dev/null
 make -s -j$(nproc)
 sudo make install -s
 echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -106,7 +105,7 @@ echo -en "${BLUE}Instalando picom...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/picom
 git submodule update --init --recursive --quiet
-meson --quiet --buildtype=release . build 
+meson --buildtype=release . build &>/dev/null
 ninja -C build --quiet
 sudo ninja -C build install --quiet
 echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -172,7 +171,7 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 echo -en "${BLUE}Instalando plugins ZSH...    ${ENDCOLOR}"
 sudo mkdir /usr/share/zsh-sudo
 cd /usr/share/zsh-sudo
-sudo -q  wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh 
+sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh 
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Cambiando de SHELL a ZSH
@@ -194,7 +193,7 @@ sudo apt remove neovim -y 2>/dev/null >/dev/null
 sudo rm -rf ~/.config/nvim
 sudo rm -rf ~/.local/share/nvim
 cd /opt/
-sudo -q  wget -P /opt/ https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+sudo wget -q -P /opt/ https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
 sudo tar xzvf nvim-linux64.tar.gz
 rm -f nvim-linux64.tar.gz
 git clone -q https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
