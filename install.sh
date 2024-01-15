@@ -96,8 +96,11 @@ sleep 1.5
 cd ~/github/polybar
 mkdir build 
 cd build
+echo "${YELLOW}CMAKE ..${ENDCOLOR}"
 cmake .. &>/dev/null
+echo "${YELLOW}MAKE -S ${ENDCOLOR}"
 make -s -j$(nproc)
+echo "${YELLOW}MAKE INSTALL${ENDCOLOR}"
 sudo make install -s
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
@@ -105,9 +108,13 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 echo -en "${BLUE}Instalando picom...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/picom
+echo "${YELLOW}GIT  SUBMODULE${ENDCOLOR}"
 git submodule update --init --recursive --quiet
+echo "${YELLOW}MESON${ENDCOLOR}"
 meson --buildtype=release . build &>/dev/null
+echo "${YELLOW}NINJA${ENDCOLOR}"
 ninja -C build --quiet
+echo "${YELLOW}NINJA INSTALL${ENDCOLOR}"
 sudo ninja -C build install --quiet
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
@@ -179,7 +186,7 @@ sudo wget -q https://raw.githubusercontent.com/marlonrichert/zsh-autocomplete/ma
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Cambiando de SHELL a ZSH
-echo -en "${BLUE}Cambiando terminal a ZSH${ENDCOLOR}"
+echo -e "${BLUE}Cambiando terminal a ZSH${ENDCOLOR}"
 chsh -s /usr/bin/zsh
 sudo usermod --shell /usr/bin/zsh root
 sudo ln -s -fv ~/.zshrc /root/.zshrc &>/dev/null
@@ -193,23 +200,34 @@ chmod +x ~/.config/bin/htb_target.sh
 
 # Instalando Nvim + Nvchad
 echo -en "${BLUE}Instalando Nvchad...${ENDCOLOR}"
+echo "${YELLOW}APT REMOVE${ENDCOLOR}"
 sudo apt remove neovim -y 2>/dev/null >/dev/null
+echo "${YELLOW}REMOVE${ENDCOLOR}"
 sudo rm -rf ~/.config/nvim
 sudo rm -rf ~/.local/share/nvim
 cd /opt/
+echo "${YELLOW}WGET${ENDCOLOR}"
 sudo wget -q -P /opt/ https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+echo "${YELLOW}TAR${ENDCOLOR}"
 sudo tar xzvf nvim-linux64.tar.gz
+echo "${YELLOW}REMOVE${ENDCOLOR}"
 rm -f nvim-linux64.tar.gz
+echo "${YELLOW}CLONE${ENDCOLOR}"
 git clone -q https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
+echo "${YELLOW}COPY${ENDCOLOR}"
 sudo cp -r ~/.config/nvim /root/.config &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Install fzf
 echo -en "${BLUE}Instalando fzf...${ENDCOLOR}"
+echo "${YELLOW}CLONE${ENDCOLOR}"
 git clone -q --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+echo "${YELLOW}INSTALL${ENDCOLOR}"
 ~/.fzf/install --all
 
+echo "${YELLOW}CLONE ROOT${ENDCOLOR}"
 sudo git clone -q --depth 1 https://github.com/junegunn/fzf.git /root/.fzf
+echo "${YELLOW}INSTALL ROOT${ENDCOLOR}"
 sudo /root/.fzf/install --all
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
