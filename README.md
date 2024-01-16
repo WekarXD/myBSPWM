@@ -3,13 +3,21 @@ Script que realiza una instalacion de un entorno con BSPWM basado en el entorno 
 
 ### Probado
 - Parrot OS (6.5.0)
+- Kali Linux
+
 
 ## Prerequisitos
 
 Primero asegurte de ten er actualizado el sistema.
 Puedes actualizarlo con el siguiente comando
+PARROT OS
 ```
 sudo apt update && sudo parrot-upgrade -y
+```
+
+Kali Linux
+```
+sudo apt update && sudo apt-upgrade -y
 ```
 
 > [!CAUTION]
