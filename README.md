@@ -1,5 +1,5 @@
 # myBSPWM
-Script que instala un tema de BSWPM inspirado en el entorno de [s4vitar](https://github.com/s4vitar)
+Script que instala un tema de BSWPM inspirado en el entorno de [s4vitar](https://github.com/s4vitar).
 Inspirado en el Script de [PatxaSec](https://github.com/PatxaSec/myBSPWM)
 
 ### Probado
