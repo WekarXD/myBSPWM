@@ -96,11 +96,11 @@ sleep 1.5
 cd ~/github/polybar
 mkdir build 
 cd build
-echo "${YELLOW}CMAKE ..${ENDCOLOR}"
+echo -e "${YELLOW}CMAKE ..${ENDCOLOR}"
 cmake .. &>/dev/null
-echo "${YELLOW}MAKE -S ${ENDCOLOR}"
-make -s -j$(nproc)
-echo "${YELLOW}MAKE INSTALL${ENDCOLOR}"
+echo -e "${YELLOW}MAKE -S ${ENDCOLOR}"
+make -s -j$(nproc) &>/dev/null
+echo -e "${YELLOW}MAKE INSTALL${ENDCOLOR}"
 sudo make install -s
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
@@ -108,14 +108,14 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 echo -en "${BLUE}Instalando picom...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/picom
-echo "${YELLOW}GIT  SUBMODULE${ENDCOLOR}"
+echo -e "${YELLOW}GIT  SUBMODULE${ENDCOLOR}"
 git submodule update --init --recursive --quiet
-echo "${YELLOW}MESON${ENDCOLOR}"
+echo -e "${YELLOW}MESON${ENDCOLOR}"
 meson --buildtype=release . build &>/dev/null
-echo "${YELLOW}NINJA${ENDCOLOR}"
-ninja -C build --quiet
-echo "${YELLOW}NINJA INSTALL${ENDCOLOR}"
-sudo ninja -C build install --quiet
+echo -e "${YELLOW}NINJA${ENDCOLOR}"
+ninja -C build --quiet &>/dev/null
+echo -e "${YELLOW}NINJA INSTALL${ENDCOLOR}"
+sudo ninja -C build install --quiet &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando la kitty
@@ -200,35 +200,35 @@ chmod +x ~/.config/bin/htb_target.sh
 
 # Instalando Nvim + Nvchad
 echo -en "${BLUE}Instalando Nvchad...${ENDCOLOR}"
-echo "${YELLOW}APT REMOVE${ENDCOLOR}"
+echo -e "${YELLOW}APT REMOVE${ENDCOLOR}"
 sudo apt remove neovim -y 2>/dev/null >/dev/null
-echo "${YELLOW}REMOVE${ENDCOLOR}"
+echo -e "${YELLOW}REMOVE${ENDCOLOR}"
 sudo rm -rf ~/.config/nvim
 sudo rm -rf ~/.local/share/nvim
 cd /opt/
-echo "${YELLOW}WGET${ENDCOLOR}"
+echo -e "${YELLOW}WGET${ENDCOLOR}"
 sudo wget -q -P /opt/ https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-echo "${YELLOW}TAR${ENDCOLOR}"
-sudo tar xzvf nvim-linux64.tar.gz
-echo "${YELLOW}REMOVE${ENDCOLOR}"
-rm -f nvim-linux64.tar.gz
-echo "${YELLOW}CLONE${ENDCOLOR}"
+echo -e "${YELLOW}TAR${ENDCOLOR}" 
+sudo tar xzvf nvim-linux64.tar.gz &>/dev/null
+echo -e "${YELLOW}REMOVE${ENDCOLOR}"
+sudo rm -f nvim-linux64.tar.gz
+echo -e "${YELLOW}CLONE${ENDCOLOR}"
 git clone -q https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
-echo "${YELLOW}COPY${ENDCOLOR}"
+echo -e "${YELLOW}COPY${ENDCOLOR}"
 sudo cp -r ~/.config/nvim /root/.config &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Install fzf
 echo -en "${BLUE}Instalando fzf...${ENDCOLOR}"
-echo "${YELLOW}CLONE${ENDCOLOR}"
+echo -e "${YELLOW}CLONE${ENDCOLOR}"
 git clone -q --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-echo "${YELLOW}INSTALL${ENDCOLOR}"
-~/.fzf/install --all
+echo -e "${YELLOW}INSTALL${ENDCOLOR}"
+~/.fzf/install --all &>/dev/null
 
-echo "${YELLOW}CLONE ROOT${ENDCOLOR}"
+echo -e "${YELLOW}CLONE ROOT${ENDCOLOR}"
 sudo git clone -q --depth 1 https://github.com/junegunn/fzf.git /root/.fzf
-echo "${YELLOW}INSTALL ROOT${ENDCOLOR}"
-sudo /root/.fzf/install --all
+echo -e "${YELLOW}INSTALL ROOT${ENDCOLOR}"
+sudo /root/.fzf/install --all &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Configuramos el tema Nord de Rofi:
@@ -236,7 +236,7 @@ echo -en "${BLUE}Instalando Rofi...${ENDCOLOR}"
 sleep 1.5
 mkdir -p ~/.config/rofi/themes
 cp $ruta/rofi/nord.rasi ~/.config/rofi/themes/
-rofi-theme-selector
+rofi-theme-selector &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando Wallpapers
