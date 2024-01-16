@@ -1,6 +1,6 @@
 # myBSPWM
-Script que instala un tema de BSWPM inspirado en el entorno de [s4vitar](https://github.com/s4vitar)
-Inspirado en el Script de [PatxaSec](https://github.com/PatxaSec/myBSPWM)
+Script que instala un tema de BSWPM inspirado en el entorno de [s4vitar](https://github.com/s4vitar).\
+Inspirado en el Script de [PatxaSec](https://github.com/PatxaSec/myBSPWM).
 
 ### Probado
 - Parrot OS
@@ -30,7 +30,6 @@ sudo apt update && sudo apt upgrade -y
 >reboot
 >```
 
-## Instalación
 
 ```
 git clone https://github.com/WekarXD/myBSPWM.git
