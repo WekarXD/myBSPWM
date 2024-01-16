@@ -172,7 +172,7 @@ cd /usr/share/zsh-sudo
 sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
 sudo mkdir /usr/share/zsh-autocomplete
 cd /usr/share
-git clone -q --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git
+sudo git clone -q --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Cambiando de SHELL a ZSH
