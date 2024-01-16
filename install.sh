@@ -10,8 +10,6 @@ CYAN="\e[36m"
 WHITE="\e[97m"
 ENDCOLOR="\e[0m"
 
-SILENT="2>/dev/null >/dev/null"
-
 # Funcion instalar paquetes necesarios
 install_packages() {
 
@@ -20,7 +18,7 @@ install_packages() {
     PAKAGE_MANAGER="apt-get"
 
     #Actualiazar paquetes
-    echo -en "${BLUE}[ ] Actualizando la lista de paquetes...${ENDCOLOR}"
+    echo -e "${BLUE}[ ] Actualizando la lista de paquetes...${ENDCOLOR}"
     if [ "$PAKAGE_MANAGER" == "apt-get" ]; then
         sudo $PAKAGE_MANAGER update -qq
         echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -33,7 +31,6 @@ install_packages() {
 
     for package in $PAKAGE_COMMON; do
         if [ "$PAKAGE_MANAGER" == "apt-get" ] && ! dpkg -l | grep -q " $package "; then
-            sudo ls &>/dev/null
             echo -e "${BLUE}[ ] Instalando ${MAGENTA}$package...${ENDCOLOR}"
             sudo $PAKAGE_MANAGER install -yqq --allow-downgrades $package 2>/dev/null >/dev/null
             echo -e "${GEERN}[+] Se ha instalado $package${ENDCOLOR}"
@@ -174,8 +171,8 @@ sudo mkdir /usr/share/zsh-sudo
 cd /usr/share/zsh-sudo
 sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
 sudo mkdir /usr/share/zsh-autocomplete
-cd /usr/share/zsh-autocomplete
-sudo wget -q https://raw.githubusercontent.com/marlonrichert/zsh-autocomplete/main/zsh-autocomplete.plugin.zsh
+cd /usr/share
+git clone -q --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Cambiando de SHELL a ZSH
@@ -190,6 +187,7 @@ chmod u+x ~/.config/bspwm/bspwmrc
 chmod +x ~/.config/bin/ethernet_status.sh
 chmod +x ~/.config/bin/htb_status.sh
 chmod +x ~/.config/bin/htb_target.sh
+chmod +x ~/.config/polybar/launch.sh
 
 # Instalando Nvim + Nvchad
 echo -en "${BLUE}Instalando Nvchad...${ENDCOLOR}"
