@@ -91,7 +91,7 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 echo -en "${BLUE}Instalando polybar...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/polybar
-mkdir build 
+mkdir build
 cd build
 cmake .. &>/dev/null
 make -s -j$(nproc) &>/dev/null
@@ -112,13 +112,13 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 echo -en "${BLUE}Instalando kitty...${ENDCOLOR}"
 sleep 1.5
 cd ~/github
-sudo mkdir /opt/kitty 
+sudo mkdir /opt/kitty
 sudo mv $kitty_bin /opt/kitty
 cd /opt/kitty/
 sudo 7z x $kitty_bin &>/dev/null
 sudo rm $kitty_bin
 kitty_bin=$(ls | grep "kitty")
-sudo tar -xf $kitty_bin 
+sudo tar -xf $kitty_bin
 sudo rm $kitty_bin
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
@@ -153,16 +153,16 @@ sudo cp -rv $ruta/Config/kitty /root/.config/ &>/dev/null
 rm -rf ~/.zshrc
 cp -v $ruta/zshrc ~/.zshrc &>/dev/null
 cp -v $ruta/p10k.zsh ~/.p10k.zsh &>/dev/null
-sudo cp -v $ruta/p10k.zsh-root /root/.p10k.zsh &>/dev/null
+sudo cp -v $ruta/root-p10k.zsh /root/.p10k.zsh &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando p10k
 echo -en "${BLUE}Instalando P10K...    ${ENDCOLOR}"
 sleep 1.5
 git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
-echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 # Instalando p10k root
-sudo git clone -q  --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
+sudo git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Plugins ZSH
@@ -188,7 +188,7 @@ chmod +x ~/.config/bin/ethernet_status.sh
 chmod +x ~/.config/bin/htb_status.sh
 chmod +x ~/.config/bin/htb_target.sh
 chmod +x ~/.config/polybar/launch.sh
-
+chmod +x ~/.config/polybar/scripts/*.sh
 # Instalando Nvim + Nvchad
 echo -en "${BLUE}Instalando Nvchad...${ENDCOLOR}"
 sudo apt remove neovim -y 2>/dev/null >/dev/null
@@ -215,7 +215,7 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 echo -en "${BLUE}Instalando Rofi...${ENDCOLOR}"
 sleep 1.5
 mkdir -p ~/.config/rofi/themes
-cp $ruta/rofi/nord.rasi ~/.config/rofi/themes/
+cp $ruta/rofi/themes/forest.rasi ~/.config/rofi/themes/
 rofi-theme-selector &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
@@ -223,8 +223,8 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 sleep 1.5
 mkdir ~/Wallpaper
 cp -v $ruta/Wallpaper/* ~/Wallpaper &>/dev/null
-echo "# WALLPAPER" >> ~/.config/bspwm/bspwmrc
-echo "feh --bg-fill ~/Wallpaper/death.jpg &" >> ~/.config/bspwm/bspwmrc
+echo "# WALLPAPER" >>~/.config/bspwm/bspwmrc
+echo "feh --bg-fill ~/Wallpaper/death.jpg &" >>~/.config/bspwm/bspwmrc
 
 # Eliminando restos
 echo -en "${BLUE}Limpiando restos...    ${ENDCOLOR}"
