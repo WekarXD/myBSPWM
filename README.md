@@ -5,6 +5,7 @@ Inspirado en el Script de [PatxaSec](https://github.com/PatxaSec/myBSPWM).
 ### Probado
 - Parrot OS
 - Kali Linux
+- Ubuntu
 
 ## Instalación
 
@@ -13,6 +14,8 @@ Primero asegurte de ten er actualizado el sistema.
 # PARROT OS
 sudo apt update && sudo parrot-upgrade -y
 # Kali Linux
+sudo apt update && sudo apt upgrade -y
+# Ubuntu
 sudo apt update && sudo apt upgrade -y
 ```
 
