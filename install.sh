@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Activar la salida al fallar cualquier comando
+set -e
+
 # COLORS
 RED="\e[31m"
 GREEN="\e[32m"
@@ -12,8 +15,8 @@ ENDCOLOR="\e[0m"
 
 # Obtener el sistema operativo
 OS_NAME=$(grep '^NAME=' /etc/os-release | cut -d'=' -f2 | tr -d '"')
-# Obtener el Package manager
 
+# Obtener el Package manager
 if grep -q "Ubuntu" /etc/os-release || grep -q "Debian" /etc/os-release || grep -q "Parrot" /etc/os-release; then
     PAKAGE_MANAGER="apt-get"
 elif grep -q "Fedora" /etc/os-release; then
@@ -67,7 +70,7 @@ install_packages() {
         if [ "$PAKAGE_MANAGER" == "apt-get" ] && ! dpkg -l | grep -q " $package "; then
             echo -e "${BLUE}[ ] Instalando ${MAGENTA}$package...${ENDCOLOR}"
             sudo $PAKAGE_MANAGER install -yqq --allow-downgrades $package 2>/dev/null >/dev/null
-            echo -e "${GEERN}[+] Se ha instalado $package${ENDCOLOR}"
+            echo -e "${GREEN}[+] Se ha instalado $package${ENDCOLOR}"
             sleep 1
         else
             echo -e "${RED}[!] $package ya está instalado.${ENDCOLOR}"
@@ -75,11 +78,13 @@ install_packages() {
     done
 }
 
+# Obtener la ruta actual
 ruta=$(pwd)
 
 # Verificar e instalar paquetes
 install_packages
 
+# Crear directorio de github
 mkdir ~/github
 cd ~/github
 echo -en "${BLUE}Descargando Repositorios... ${ENDCOLOR}"
@@ -89,14 +94,17 @@ git clone -q https://github.com/baskerville/sxhkd.git
 git clone -q --recursive https://github.com/polybar/polybar
 git clone -q https://github.com/ibhagwan/picom.git
 git clone -q https://github.com/Yucklys/polybar-nord-theme.git
+
 # Optener la ultima version de bat
 bat_last=$(curl -s -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
 wget -q https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb
 bat_bin=$(ls | grep "bat")
+
 # Optener la ultima version de lsd
 lsd_last=$(curl -s -L https://github.com/lsd-rs/lsd/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
 wget -q https://github.com/lsd-rs/lsd/releases/latest/download/lsd_$lsd_last\_amd64.deb
 lsd_bin=$(ls | grep "lsd")
+
 # Optener la ultima version de kitty
 kitty_last=$(curl -s -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release version " | awk '{ print $3 }')
 wget -q https://github.com/kovidgoyal/kitty/releases/latest/download/kitty-$kitty_last-x86_64.txz
