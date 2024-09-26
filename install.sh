@@ -81,6 +81,9 @@ install_packages() {
 # Obtener la ruta actual
 ruta=$(pwd)
 
+# Actualizar el sistema
+update_system
+
 # Verificar e instalar paquetes
 install_packages
 
