@@ -176,7 +176,7 @@ sudo dpkg -i $lsd_bin &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
 
 # Instalando las HackNerdFonts
-echo -en "${BLUE}Instalando las Fuentes...    ${ENDCOLOR}"
+echo -en "${BLUE}Instalando las Fuentes...${ENDCOLOR}"
 sleep 1.5
 sudo cp -v $ruta/fonts/HNF/* /usr/local/share/fonts/ &>/dev/null
 # Instalando las fuentes en Polybar
