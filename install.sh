@@ -10,12 +10,46 @@ CYAN="\e[36m"
 WHITE="\e[97m"
 ENDCOLOR="\e[0m"
 
+# Obtener el sistema operativo
+OS_NAME=$(grep '^NAME=' /etc/os-release | cut -d'=' -f2 | tr -d '"')
+# Obtener el Package manager
+
+if grep -q "Ubuntu" /etc/os-release || grep -q "Debian" /etc/os-release || grep -q "Parrot" /etc/os-release; then
+    PAKAGE_MANAGER="apt-get"
+elif grep -q "Fedora" /etc/os-release; then
+    PAKAGE_MANAGER="dnf"
+elif grep -q "CentOS" /etc/os-release || grep -q "Red Hat" /etc/os-release; then
+    PAKAGE_MANAGER="yum"
+elif grep -q "Arch" /etc/os-release; then
+    PAKAGE_MANAGER="pacman"
+elif grep -q "openSUSE" /etc/os-release; then
+    PAKAGE_MANAGER="zypper"
+elif grep -q "Alpine" /etc/os-release; then
+    PAKAGE_MANAGER="apk"
+else
+    PAKAGE_MANAGER="unknown"
+fi
+
+# Funcion comprobar la compatibilidad
+if [ "$PAKAGE_MANAGER" != "apt-get" ]; then
+    echo -e "${RED}[!] El sistema operativo no es compatible${ENDCOLOR}"
+    exit 2
+fi
+
+# Funcion actualizar el sistema
+update_system() {
+    if [[ "$OS_NAME" == *"Parrot"* && "$PAKAGE_MANAGER" == "apt-get" ]]; then
+        echo -e "${BLUE}[ ] Actualizando el sitema Parrot...${ENDCOLOR}"
+        sudo apt update && sudo parrot-upgrade -y
+    else
+        echo -e "${BLUE}[ ] Actualizando el sitema...${ENDCOLOR}"
+        sudo apt update && sudo apt upgrade -y
+    fi
+    sleep 3
+}
+
 # Funcion instalar paquetes necesarios
 install_packages() {
-
-    local PAKAGE_MANAGER
-
-    PAKAGE_MANAGER="apt-get"
 
     #Actualiazar paquetes
     echo -e "${BLUE}[ ] Actualizando la lista de paquetes...${ENDCOLOR}"
@@ -102,8 +136,7 @@ echo -e "${GREEN}Listo.${ENDCOLOR}"
 echo -en "${BLUE}Instalando picom...${ENDCOLOR}"
 sleep 1.5
 cd ~/github/picom
-git submodule update --init --recursive --quiet
-meson --buildtype=release . build &>/dev/null
+meson setup --buildtype=release build &>/dev/null
 ninja -C build --quiet &>/dev/null
 sudo ninja -C build install --quiet &>/dev/null
 echo -e "${GREEN}Listo.${ENDCOLOR}"
