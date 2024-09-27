@@ -172,7 +172,7 @@ install_window_manager() {
     echo -en "${BLUE}Instalando polybar...${ENDCOLOR}"
     mkdir build
     cd build
-    cmake ..
+    cmake -DCMAKE_CXX_COMPILER="clang++" ..
     make -j$(nproc)
     # Optional. This will install the polybar executable in /usr/bin
     sudo make install
