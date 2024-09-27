@@ -51,10 +51,10 @@ fi
 update_system() {
     if [[ "$OS_NAME" == *"Parrot"* && "$PAKAGE_MANAGER" == "apt-get" ]]; then
         echo -e "${BLUE}[ ] Actualizando el sitema Parrot...${ENDCOLOR}"
-        sudo apt update && sudo parrot-upgrade -y && sudo apt autoremove
+        sudo apt update && sudo parrot-upgrade -y && sudo apt autoremove -y
     else
         echo -e "${BLUE}[ ] Actualizando el sitema...${ENDCOLOR}"
-        sudo apt update && sudo apt upgrade -y && sudo apt autoremove
+        sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
     fi
     sleep 3
 }
@@ -145,7 +145,7 @@ configure_rofi() {
     sleep 1.5
     mkdir -p $ROFI_THEME_DIR
     cp $MAIN_DIR/rofi/themes/forest.rasi $ROFI_THEME_DIR/
-    rofi-theme-selector &>/dev/null
+    #rofi-theme-selector &>/dev/null
     echo -e "${GREEN}Rofi configurado.${ENDCOLOR}"
 }
 
@@ -160,7 +160,6 @@ install_window_manager() {
     #sudo apt-get install bspwm -yqq
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 
-    install_software "sxhkd"
     # Install sxhkd
     echo -en "${BLUE}Instalando sxhkd...${ENDCOLOR}"
     sleep 1.5
