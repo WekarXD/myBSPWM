@@ -193,7 +193,7 @@ install_fonts() {
     echo -en "${BLUE}Instalando las fuentes...${ENDCOLOR}"
     sleep 1.5
     sudo cp -v $MAIN_DIR/fonts/HNF/* /usr/local/share/fonts/ &>/dev/null
-    sudo cp -v $MAIN_DIR/Config/polybar/fonts/* /usr/share/fonts/truetype/ &>/dev/null
+    sudo mkdir /usr/share/fonts/truetype/HNF && sudo cp -v $MAIN_DIR/fonts/HNF/* /usr/share/fonts/truetype/HNF &>/dev/null
     echo -e "${GREEN}Fuentes instaladas.${ENDCOLOR}"
 }
 
