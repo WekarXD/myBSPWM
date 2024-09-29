@@ -209,9 +209,9 @@ copy_config_files() {
     cp -v $MAIN_DIR/p10k.zsh ~/.p10k.zsh
     sudo cp -v $MAIN_DIR/root-p10k.zsh /root/.p10k.zsh
     mkdir -p ~/.config/rofi/themes
-    cp $ruta/rofi/themes/forest.rasi ~/.config/rofi/themes/
+    cp $MAIN_DIR/rofi/themes/forest.rasi ~/.config/rofi/themes/
     rofi-theme-selector
-    cp -v $ruta/Wallpaper/* ~/Wallpaper &>/dev/null
+    cp -v $MAIN_DIR/Wallpaper/* ~/Wallpaper &>/dev/null
     echo "# WALLPAPER" >>~/.config/bspwm/bspwmrc
     echo "feh --bg-fill ~/Wallpaper/death.jpg &" >>~/.config/bspwm/bspwmrc
 
