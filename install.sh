@@ -226,7 +226,7 @@ install_zsh_plugins() {
     sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh -O /usr/share/zsh-sudo/sudo.plugin.zsh
     echo 'source /usr/share/zsh-sudo/sudo.plugin.zsh' >>~/.zshrc
     cd /usr/share
-    sudo git clone -q --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git
+    #sudo git clone -q --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 }
 
