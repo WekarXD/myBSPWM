@@ -139,16 +139,6 @@ install_custom_bins() {
     echo -e "${GREEN}Kitty, Bat, LSD y fzf instalados.${ENDCOLOR}"
 }
 
-# Función para configurar Rofi
-configure_rofi() {
-    echo -en "${BLUE}Configurando Rofi...${ENDCOLOR}"
-    sleep 1.5
-    mkdir -p $ROFI_THEME_DIR
-    cp $MAIN_DIR/rofi/themes/forest.rasi $ROFI_THEME_DIR/
-    #rofi-theme-selector &>/dev/null
-    echo -e "${GREEN}Rofi configurado.${ENDCOLOR}"
-}
-
 # Función para instalar BSPWM, SXHKD, Polybar y Picom
 install_window_manager() {
     # Install bspwm
@@ -313,7 +303,6 @@ main() {
     install_packages
     download_repositories
     install_custom_bins
-    configure_rofi
     install_window_manager
     install_fonts
     copy_config_files
