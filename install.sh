@@ -198,7 +198,7 @@ copy_config_files() {
     cp -v $MAIN_DIR/zshrc ~/.zshrc
     cp -v $MAIN_DIR/p10k.zsh ~/.p10k.zsh
     sudo cp -v $MAIN_DIR/root-p10k.zsh /root/.p10k.zsh
-    # mkdir -p ~/.config/rofi/themes
+    mkdir -p ~/.config/rofi
     cp -r $MAIN_DIR/rofi/* ~/.config/rofi/
     rofi-theme-selector
     cp -v $MAIN_DIR/Wallpaper/* ~/Wallpaper &>/dev/null
