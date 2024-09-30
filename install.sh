@@ -216,19 +216,15 @@ install_p10k() {
     echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
     sudo git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
 
-    sudo mkdir /usr/share/zsh-sudo
-    sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh -O /usr/share/zsh-sudo/sudo.plugin.zsh
-    echo 'source /usr/share/zsh-sudo/sudo.plugin.zsh' >>~/.zshrc
-    echo -e "${GREEN}P10K y plugins ZSH instalados.${ENDCOLOR}"
+    echo -e "${GREEN}P10K instalado.${ENDCOLOR}"
 }
 
 # Instalando ZSH plugins
 install_zsh_plugins() {
     echo -en "${BLUE}Instalando plugins ZSH...${ENDCOLOR}"
     sudo mkdir /usr/share/zsh-sudo
-    cd /usr/share/zsh-sudo
-    sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
-    sudo mkdir /usr/share/zsh-autocomplete
+    sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh -O /usr/share/zsh-sudo/sudo.plugin.zsh
+    echo 'source /usr/share/zsh-sudo/sudo.plugin.zsh' >>~/.zshrc
     cd /usr/share
     sudo git clone -q --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git
     echo -e "${GREEN}Listo.${ENDCOLOR}"
