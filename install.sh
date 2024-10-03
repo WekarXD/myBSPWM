@@ -147,7 +147,7 @@ install_window_manager() {
     cd $GITHUB_DIR/bspwm
     make -s -j$(nproc)
     sudo make install
-    #sudo apt-get install bspwm -yqq
+    sudo apt-get install bspwm -yqq
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 
     # Install sxhkd
@@ -182,8 +182,8 @@ install_window_manager() {
 install_fonts() {
     echo -en "${BLUE}Instalando las fuentes...${ENDCOLOR}"
     sleep 1.5
-    sudo cp -v $MAIN_DIR/fonts/HNF/* /usr/local/share/fonts/ &>/dev/null
-    sudo mkdir /usr/share/fonts/truetype/HNF && sudo cp -v $MAIN_DIR/fonts/HNF/* /usr/share/fonts/truetype/HNF &>/dev/null
+    sudo cp $MAIN_DIR/fonts/HNF/* /usr/local/share/fonts/
+    sudo mkdir /usr/share/fonts/truetype/HNF && sudo cp $MAIN_DIR/fonts/HNF/* /usr/share/fonts/truetype/HNF
     echo -e "${GREEN}Fuentes instaladas.${ENDCOLOR}"
 }
 
@@ -191,9 +191,9 @@ install_fonts() {
 copy_config_files() {
     echo -en "${BLUE}Copiando archivos de configuración...${ENDCOLOR}"
     sleep 1.5
-    cp -rv $MAIN_DIR/Config/* $CONFIG_DIR/ &>/dev/null
-    sudo cp -rv $MAIN_DIR/Config/kitty $CONFIG_DIR/ &>/dev/null
-    sudo cp -rv $MAIN_DIR/Config/kitty /root/.config/ &>/dev/null
+    cp -rv $MAIN_DIR/Config/* $CONFIG_DIR/
+    sudo cp -rv $MAIN_DIR/Config/kitty $CONFIG_DIR/
+    sudo cp -rv $MAIN_DIR/Config/kitty /root/.config/
     rm -rf ~/.zshrc
     cp -v $MAIN_DIR/zshrc ~/.zshrc
     cp -v $MAIN_DIR/p10k.zsh ~/.p10k.zsh
@@ -201,7 +201,7 @@ copy_config_files() {
     mkdir -p ~/.config/rofi
     cp -r $MAIN_DIR/rofi/* ~/.config/rofi/
     rofi-theme-selector
-    cp -v $MAIN_DIR/Wallpaper/* ~/Wallpaper &>/dev/null
+    cp -v $MAIN_DIR/Wallpaper/* ~/Wallpaper
     echo "# WALLPAPER" >>~/.config/bspwm/bspwmrc
     echo "feh --bg-fill ~/Wallpaper/death.jpg &" >>~/.config/bspwm/bspwmrc
 
@@ -225,7 +225,7 @@ install_zsh_plugins() {
     sudo mkdir /usr/share/zsh-sudo
     sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh -O /usr/share/zsh-sudo/sudo.plugin.zsh
     echo 'source /usr/share/zsh-sudo/sudo.plugin.zsh' >>~/.zshrc
-    cd /usr/share
+    #cd /usr/share
     #sudo git clone -q --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 }
@@ -235,10 +235,11 @@ permissions_shell() {
     echo -e "${BLUE}Cambiando terminal a ZSH${ENDCOLOR}"
     chsh -s /usr/bin/zsh
     sudo usermod --shell /usr/bin/zsh root
-    sudo ln -s -fv ~/.zshrc /root/.zshrc &>/dev/null
+    sudo ln -s -fv ~/.zshrc /root/.zshrc
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 
     chmod u+x ~/.config/bspwm/bspwmrc
+    chmod u+x ~/.config/sxhkd/sxhkdrc
     chmod +x ~/.config/bin/ethernet_status.sh
     chmod +x ~/.config/bin/htb_status.sh
     chmod +x ~/.config/bin/htb_target.sh
@@ -249,15 +250,15 @@ permissions_shell() {
 # Instalar Nvim + Nvchad
 install_nvim() {
     echo -en "${BLUE}Instalando Nvchad...${ENDCOLOR}"
-    sudo apt remove neovim -y 2>/dev/null >/dev/null
+    sudo apt remove neovim -y
     sudo rm -rf ~/.config/nvim
     sudo rm -rf ~/.local/share/nvim
     cd /opt/
     sudo wget -q -P /opt/ https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-    sudo tar xzvf nvim-linux64.tar.gz &>/dev/null
+    sudo tar xzvf nvim-linux64.tar.gz
     sudo rm -f nvim-linux64.tar.gz
     git clone -q https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
-    sudo cp -r ~/.config/nvim /root/.config &>/dev/null
+    sudo cp -r ~/.config/nvim /root/.config
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 }
 
