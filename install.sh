@@ -162,11 +162,11 @@ install_kitty() {
 
     mkdir -p $CONFIG_DIR/kitty
     cp $MAIN_DIR/Config/kitty/kitty.conf $CONFIG_DIR/kitty/kitty.conf
-    cp $MAIN_DIR/Config/kitty/colors.ini $CONFIG_DIR/kitty/colors.ini
+    cp $MAIN_DIR/Config/kitty/color.ini $CONFIG_DIR/kitty/color.ini
     cp $MAIN_DIR/Config/kitty/kitty.conf /root/.config/kitty/kitty.conf
-    cp $MAIN_DIR/Config/kitty/colors.ini /root/.config/kitty/colors.ini
+    cp $MAIN_DIR/Config/kitty/color.ini /root/.config/kitty/color.ini
     ln -s $CONFIG_DIR/kitty/kitty.conf /root/.config/kitty/kitty.conf
-    ln -s $CONFIG_DIR/kitty/colors.ini /root/.config/kitty/colors.ini
+    ln -s $CONFIG_DIR/kitty/color.ini /root/.config/kitty/color.ini
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 }
 
