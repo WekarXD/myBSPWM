@@ -205,22 +205,16 @@ configure_zsh() {
 install_custom_bins() {
     cd $MAIN_DIR
     echo -e "${BLUE}Instalando binarios...${ENDCOLOR}"
-    echo -e "${YELLOW}BAT${ENDCOLOR}"
     # Obtener la última versión de bat
-    echo -e "${YELLOW}BAT Last${ENDCOLOR}"
     bat_last=$(curl -s -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
-    echo -e "${YELLOW}BAT Wget${ENDCOLOR}"
     wget https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb
-    echo -e "${YELLOW}BAT Dpkg${ENDCOLOR}"
     sudo dpkg -i bat_$bat_last\_amd64.deb
 
-    echo -e "${YELLOW}LSD${ENDCOLOR}"
     # Obtener la última versión de lsd
     lsd_last=$(curl -s -L https://github.com/lsd-rs/lsd/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
     wget -q https://github.com/lsd-rs/lsd/releases/latest/download/lsd_$lsd_last\_amd64.deb
     sudo dpkg -i lsd_$lsd_last\_amd64.deb
 
-    echo -e "${YELLOW}FZF${ENDCOLOR}"
     # Install fzf
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install --all
@@ -246,6 +240,7 @@ copy_config_files() {
 # Instalar Nvim + Nvchad
 install_nvim() {
     echo -e "${BLUE}Instalando Nvim...${ENDCOLOR}"
+    cd $MAIN_DIR
     sudo apt remove neovim -y
     sudo apt remove nvim -y
 
@@ -253,7 +248,7 @@ install_nvim() {
 
     sudo mkdir -p /opt/nvim
     cd /opt/nvim
-    nvim_last=$(curl -s -L https://github.com/neovim/neovim/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
+    nvim_last=$(curl -s -L https://github.com/neovim/neovim/releases/latest/ | grep "<title>Release Nvim" | awk '{ print $3 }')
     sudo wget -q https://github.com/neovim/neovim/releases/download/v$nvim_last/nvim-linux64.tar.gz
     sudo tar -xf nvim-linux64.tar.gz && sudo rm -f nvim-linux64.tar.gz
 
