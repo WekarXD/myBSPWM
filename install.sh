@@ -154,11 +154,11 @@ install_kitty() {
     echo -en "${BLUE}Instalando kitty...${ENDCOLOR}"
     sleep 1.5
     sudo mkdir -p /opt/kitty
-    kitty_last=$(curl -s -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
-    wget -q https://github.com/kovidgoyal/kitty/releases/download/v$kitty_last/kitty-$kitty_last-linux-x86_64.txz -O /opt/kitty/
     cd /opt/kitty
-    7z x kitty-$kitty_last-linux-x86_64.txz && rm -f kitty-$kitty_last-linux-x86_64.txz
-    tar -xf kitty-$kitty_last-linux-x86_64.tar && rm -f kitty-$kitty_last-linux-x86_64.tar
+    kitty_last=$(curl -s -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release v" | awk '{ print $3 }')
+    sudo wget -q https://github.com/kovidgoyal/kitty/releases/download/v$kitty_last/kitty-$kitty_last-x86_64.txz
+    sudo 7z x kitty-$kitty_last-x86_64.txz && sudorm -f kitty-$kitty_last-x86_64.txz
+    sudo tar -xf kitty-$kitty_last-x86_64.tar && sudo rm -f kitty-$kitty_last-x86_64.tar
 
     cp $MAIN_DIR/Config/kitty/kitty.conf $CONFIG_DIR/kitty/kitty.conf
     cp $MAIN_DIR/Config/kitty/colors.ini $CONFIG_DIR/kitty/colors.ini
@@ -217,7 +217,7 @@ install_custom_bins() {
     sudo git clone -q --depth 1 https://github.com/junegunn/fzf.git /root/.fzf
     sudo /root/.fzf/install --all
 
-    echo -e "${GREEN}Kitty, Bat, LSD y fzf instalados.${ENDCOLOR}"
+    echo -e "${GREEN}Bat, LSD y fzf instalados.${ENDCOLOR}"
 }
 
 # Función para copiar configuraciones
