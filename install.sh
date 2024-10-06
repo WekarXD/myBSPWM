@@ -235,9 +235,6 @@ copy_config_files() {
     echo -e "${BLUE}Copiando archivos de configuración...${ENDCOLOR}"
     sleep 1.5
 
-    mkdir -p ~/.config/rofi
-    cp -r $MAIN_DIR/rofi/* ~/.config/rofi/
-    rofi-theme-selector
     # Wallpaper
     cp -v $MAIN_DIR/Wallpapers/* ~/Wallpapers
     echo "# WALLPAPER" >>~/.config/bspwm/bspwmrc
@@ -254,11 +251,11 @@ install_nvim() {
 
     git clone https://github.com/NvChad/starter ~/.config/nvim
 
-    mkdir -p /opt/nvim
-    nvim_last=$(curl -s -L https://github.com/neovim/neovim/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
-    wget -q https://github.com/neovim/neovim/releases/download/v$nvim_last/nvim-linux64.tar.gz -O /opt/nvim/
+    sudo mkdir -p /opt/nvim
     cd /opt/nvim
-    tar -xf nvim-linux64.tar.gz && rm -f nvim-linux64.tar.gz
+    nvim_last=$(curl -s -L https://github.com/neovim/neovim/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
+    sudo wget -q https://github.com/neovim/neovim/releases/download/v$nvim_last/nvim-linux64.tar.gz
+    sudo tar -xf nvim-linux64.tar.gz && sudo rm -f nvim-linux64.tar.gz
 
     sudo mkdir -p /root/.config/nvim
     sudo cp -r ~/.config/nvim/* /root/.config/nvim/
