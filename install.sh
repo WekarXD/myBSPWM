@@ -157,7 +157,7 @@ install_kitty() {
     cd /opt/kitty
     kitty_last=$(curl -s -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release v" | awk '{ print $3 }')
     sudo wget -q https://github.com/kovidgoyal/kitty/releases/download/v$kitty_last/kitty-$kitty_last-x86_64.txz
-    sudo 7z x kitty-$kitty_last-x86_64.txz && sudorm -f kitty-$kitty_last-x86_64.txz
+    sudo 7z x kitty-$kitty_last-x86_64.txz && sudo rm -f kitty-$kitty_last-x86_64.txz
     sudo tar -xf kitty-$kitty_last-x86_64.tar && sudo rm -f kitty-$kitty_last-x86_64.tar
 
     cp $MAIN_DIR/Config/kitty/kitty.conf $CONFIG_DIR/kitty/kitty.conf
