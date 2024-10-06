@@ -105,7 +105,7 @@ install_packages() {
 download_repositories() {
     mkdir -p $GITHUB_DIR
     cd $GITHUB_DIR
-    echo -en "${BLUE}Descargando Repositorios... ${ENDCOLOR}"
+    echo -e "${BLUE}Descargando Repositorios... ${ENDCOLOR}"
     sleep 1.5
     git clone -q https://github.com/baskerville/bspwm.git
     git clone -q https://github.com/baskerville/sxhkd.git
@@ -117,7 +117,7 @@ download_repositories() {
 
 # Función para instalar BSPWM, SXHKD, Polybar y Picom
 install_bspwm+sxhkd() {
-    echo -en "${BLUE}Instalando bspwm y sxhkd...${ENDCOLOR}"
+    echo -e "${BLUE}Instalando bspwm y sxhkd...${ENDCOLOR}"
     sleep 1.5
     cd $GITHUB_DIR/bspwm && make && sudo make install
     cd $GITHUB_DIR/sxhkd && make && sudo make install
@@ -132,7 +132,7 @@ install_bspwm+sxhkd() {
 }
 
 install_picom() {
-    echo -en "${BLUE}Instalando picom...${ENDCOLOR}"
+    echo -e "${BLUE}Instalando picom...${ENDCOLOR}"
     sleep 1.5
     cd $GITHUB_DIR/picom && meson setup --buildtype=release build && ninja -C build && ninja -C build install
     mkdir $CONFIG_DIR/picom
@@ -141,7 +141,7 @@ install_picom() {
 }
 
 install_fonts() {
-    echo -en "${BLUE}Instalando las fuentes...${ENDCOLOR}"
+    echo -e "${BLUE}Instalando las fuentes...${ENDCOLOR}"
     sleep 1.5
     sudo cp $MAIN_DIR/fonts/HNF/* /usr/local/share/fonts/
     #
@@ -151,7 +151,7 @@ install_fonts() {
 }
 
 install_kitty() {
-    echo -en "${BLUE}Instalando kitty...${ENDCOLOR}"
+    echo -e "${BLUE}Instalando kitty...${ENDCOLOR}"
     sleep 1.5
     sudo mkdir -p /opt/kitty
     cd /opt/kitty
@@ -173,7 +173,7 @@ install_kitty() {
 
 # Función para instalar P10K
 install_p10k() {
-    echo -en "${BLUE}Instalando P10K y plugins ZSH...${ENDCOLOR}"
+    echo -e "${BLUE}Instalando P10K y plugins ZSH...${ENDCOLOR}"
     sleep 1.5
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
     sudo git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
@@ -186,7 +186,7 @@ install_p10k() {
 
 # Función para configurar ZSH
 configure_zsh() {
-    echo -en "${BLUE}Configurando ZSH...${ENDCOLOR}"
+    echo -e "${BLUE}Configurando ZSH...${ENDCOLOR}"
     sleep 1.5
     cp -v $MAIN_DIR/Config/zsh/zshrc ~/.zshrc
     sudo cp -v $MAIN_DIR/Config/zsh/zshrc /root/.zshrc
@@ -203,6 +203,7 @@ configure_zsh() {
 
 # Función para instalar Bat, LSD y fzf
 install_custom_bins() {
+    echo -e "${BLUE}Instalando binarios...${ENDCOLOR}"
     # Obtener la última versión de bat
     bat_last=$(curl -s -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
     wget -q https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb
@@ -219,12 +220,12 @@ install_custom_bins() {
     sudo git clone -q --depth 1 https://github.com/junegunn/fzf.git /root/.fzf
     sudo /root/.fzf/install --all
 
-    echo -e "${GREEN}Bat, LSD y fzf instalados.${ENDCOLOR}"
+    echo -e "${GREEN}Listo${ENDCOLOR}"
 }
 
 # Función para copiar configuraciones
 copy_config_files() {
-    echo -en "${BLUE}Copiando archivos de configuración...${ENDCOLOR}"
+    echo -e "${BLUE}Copiando archivos de configuración...${ENDCOLOR}"
     sleep 1.5
 
     mkdir -p ~/.config/rofi
@@ -240,7 +241,7 @@ copy_config_files() {
 
 # Instalar Nvim + Nvchad
 install_nvim() {
-    echo -en "${BLUE}Instalando Nvim...${ENDCOLOR}"
+    echo -e "${BLUE}Instalando Nvim...${ENDCOLOR}"
     sudo apt remove neovim -y
     sudo apt remove nvim -y
 
@@ -266,7 +267,7 @@ install_nvim() {
 }
 
 install_rofi_themes() {
-    echo -en "${BLUE}Instalando temas de Rofi...${ENDCOLOR}"
+    echo -e "${BLUE}Instalando temas de Rofi...${ENDCOLOR}"
     mkdir -p $ROFI_THEME_DIR
     cp -r $GITHUB_DIR/rofi-themes-collection/themes/* $ROFI_THEME_DIR/
     rofi-theme-selector
@@ -280,7 +281,7 @@ locate() {
 
 # Eliminando restos
 clean() {
-    echo -en "${BLUE}Limpiando restos...${ENDCOLOR}"
+    echo -e "${BLUE}Limpiando restos...${ENDCOLOR}"
     rm -rf $GITHUB_DIR
     rm -rf $MAIN_DIR
     echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -292,7 +293,7 @@ restart() {
     Hay que reiniciar y cambiar el entorno a bspwm"
 
     while true; do
-        echo -en "${PURPLE}[?] Es necesario reiniciar el sistema. ¿Deseas reiniciar ahora?${ENDCOLOR}"
+        echo -e "${PURPLE}[?] Es necesario reiniciar el sistema. ¿Deseas reiniciar ahora?${ENDCOLOR}"
         read -r
         REPLY=${REPLY:-"y"}
         if [[ $REPLY =~ ^[YySs]$ ]]; then
