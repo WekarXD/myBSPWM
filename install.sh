@@ -210,7 +210,7 @@ install_custom_bins() {
     echo -e "${YELLOW}BAT Last${ENDCOLOR}"
     bat_last=$(curl -s -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
     echo -e "${YELLOW}BAT Wget${ENDCOLOR}"
-    wget -q https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb
+    wget https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb
     echo -e "${YELLOW}BAT Dpkg${ENDCOLOR}"
     sudo dpkg -i bat_$bat_last\_amd64.deb
 
