@@ -192,7 +192,7 @@ configure_zsh() {
     sudo cp -v $MAIN_DIR/Config/zsh/zshrc /root/.zshrc
     sudo ln -s -f ~/.zshrc /root/.zshrc
 
-    chown root:root /usr/local/share/zsh/site-functions/_bspc
+    sudo chown root:root /usr/local/share/zsh/site-functions/_bspc
 
     sudo mkdir /usr/share/zsh-sudo
     sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh -O /usr/share/zsh-sudo/sudo.plugin.zsh
