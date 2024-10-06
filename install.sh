@@ -203,6 +203,7 @@ configure_zsh() {
 
 # Función para instalar Bat, LSD y fzf
 install_custom_bins() {
+    cd $MAIN_DIR
     echo -e "${BLUE}Instalando binarios...${ENDCOLOR}"
     echo -e "${YELLOW}BAT${ENDCOLOR}"
     # Obtener la última versión de bat
