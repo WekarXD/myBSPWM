@@ -153,7 +153,7 @@ install_fonts() {
 install_kitty() {
     echo -en "${BLUE}Instalando kitty...${ENDCOLOR}"
     sleep 1.5
-    mkdir -p /opt/kitty
+    sudo mkdir -p /opt/kitty
     kitty_last=$(curl -s -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
     wget -q https://github.com/kovidgoyal/kitty/releases/download/v$kitty_last/kitty-$kitty_last-linux-x86_64.txz -O /opt/kitty/
     cd /opt/kitty
