@@ -161,6 +161,7 @@ install_kitty() {
     sudo tar -xf kitty-$kitty_last-x86_64.tar && sudo rm -f kitty-$kitty_last-x86_64.tar
 
     mkdir -p $CONFIG_DIR/kitty
+    sudo mkdir -p /root/.config/kitty
     cp $MAIN_DIR/Config/kitty/kitty.conf $CONFIG_DIR/kitty/kitty.conf
     cp $MAIN_DIR/Config/kitty/color.ini $CONFIG_DIR/kitty/color.ini
     cp $MAIN_DIR/Config/kitty/kitty.conf /root/.config/kitty/kitty.conf
