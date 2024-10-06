@@ -122,8 +122,8 @@ install_bspwm+sxhkd() {
     cd $GITHUB_DIR/bspwm && make && sudo make install
     cd $GITHUB_DIR/sxhkd && make && sudo make install
     mkdir ~/.config/{bspwm,sxhkd}
-    cp $MAIN_DIR/Config/bspwmrc ~/.config/bspwm/bspwmrc
-    cp $MAIN_DIR/Config/sxhkdrc ~/.config/sxhkd/sxhkdrc
+    cp $MAIN_DIR/Config/bspwm/bspwmrc ~/.config/bspwm/bspwmrc
+    cp $MAIN_DIR/Config/sxhkd/sxhkdrc ~/.config/sxhkd/sxhkdrc
     chmod u+x ~/.config/bspwm/bspwmrc
     mkdir ~/.config/bspwm/scripts
     cp $MAIN_DIR/Config/bspwm/scripts/* ~/.config/bspwm/scripts/
