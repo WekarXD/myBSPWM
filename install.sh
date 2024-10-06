@@ -17,7 +17,7 @@ ENDCOLOR="\e[0m"
 
 GITHUB_DIR=~/github
 CONFIG_DIR=~/.config
-WALLPAPER_DIR=~/Wallpaper
+WALLPAPER_DIR=~/Wallpapers
 ROFI_THEME_DIR=~/.config/rofi/themes
 MAIN_DIR=$(pwd)
 
@@ -51,10 +51,10 @@ fi
 update_system() {
     if [[ "$OS_NAME" == *"Parrot"* && "$PAKAGE_MANAGER" == "apt-get" ]]; then
         echo -e "${BLUE}[ ] Actualizando el sitema Parrot...${ENDCOLOR}"
-        sudo apt update && sudo parrot-upgrade -y && sudo apt autoremove -y
+        sudo apt update && sudo parrot-upgrade -y
     else
         echo -e "${BLUE}[ ] Actualizando el sitema...${ENDCOLOR}"
-        sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
+        sudo apt update && sudo apt upgrade -y
     fi
     sleep 3
 }
@@ -69,6 +69,10 @@ check_command() {
 
 # Lista de paquetes comunes
 PAKAGE_COMMON=" rofi zsh zsh-autosuggestions zsh-syntax-highlighting zsh-autocomplete npm flameshot ranger imagemagick feh locate libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev build-essential git cmake cmake-data pkg-config python3-packaging libcairo2-dev libxcb1-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev g++ clang python3 libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev libjsoncpp-dev libmpdclient-dev libuv1-dev libnl-genl-3-dev libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libpcre2-dev libpcre3 libpcre3-dev libpixman-1-dev libx11-xcb-dev libxcb-damage0-dev libxcb-dpms0-dev libxcb-glx0-dev libxcb-present-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-util-dev libxcb-xfixes0-dev libxext-dev meson ninja-build uthash-dev libjs-sphinxdoc=5.3.0-4 python3-sphinx"
+
+bspwm_Depencencies="libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev"
+picom_Dependencies="libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libepoxy-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev meson ninja-build uthash-dev cmake"
+Package_2024="polybar rofi zsh imagemagick feh locate"
 
 # Funcion instalar paquetes necesarios
 install_package() {
@@ -109,13 +113,97 @@ download_repositories() {
     sleep 1.5
     git clone -q https://github.com/baskerville/bspwm.git
     git clone -q https://github.com/baskerville/sxhkd.git
-    git clone -q --recursive https://github.com/polybar/polybar
-    git clone -q https://github.com/ibhagwan/picom.git
+    git clone -q https://github.com/yshui/picom.git
     git clone -q https://github.com/Yucklys/polybar-nord-theme.git
+    git clone -q https://github.com/lr-tech/rofi-themes-collection.git
     echo -e "${GREEN}Repositorios descargados.${ENDCOLOR}"
 }
 
-# Función para instalar Kitty, Bat, LSD y fzf
+# Función para instalar BSPWM, SXHKD, Polybar y Picom
+install_bspwm+sxhkd() {
+    echo -en "${BLUE}Instalando bspwm y sxhkd...${ENDCOLOR}"
+    sleep 1.5
+    cd $GITHUB_DIR/bspwm && make && sudo make install
+    cd $GITHUB_DIR/sxhkd && make && sudo make install
+    mkdir ~/.config/{bspwm,sxhkd}
+    cp $MAIN_DIR/Config/bspwmrc ~/.config/bspwm/bspwmrc
+    cp $MAIN_DIR/Config/sxhkdrc ~/.config/sxhkd/sxhkdrc
+    chmod u+x ~/.config/bspwm/bspwmrc
+    mkdir ~/.config/bspwm/scripts
+    cp $MAIN_DIR/Config/bspwm/scripts/* ~/.config/bspwm/scripts/
+    chmod +x ~/.config/bspwm/scripts/*.sh
+    echo -e "${GREEN}Listo.${ENDCOLOR}"
+}
+
+install_picom() {
+    echo -en "${BLUE}Instalando picom...${ENDCOLOR}"
+    sleep 1.5
+    cd $GITHUB_DIR/picom && meson setup --buildtype=release build && ninja -C build && ninja -C build install
+    mkdir $CONFIG_DIR/picom
+    cp $MAIN_DIR/Config/picom/* $CONFIG_DIR/picom/
+    echo -e "${GREEN}Listo.${ENDCOLOR}"
+}
+
+install_fonts() {
+    echo -en "${BLUE}Instalando las fuentes...${ENDCOLOR}"
+    sleep 1.5
+    sudo cp $MAIN_DIR/fonts/HNF/* /usr/local/share/fonts/
+    #
+    sudo mkdir /usr/share/fonts/truetype/Polybar && sudo cp $MAIN_DIR/fonts/Polybar/* /usr/share/fonts/truetype/Polybar
+    fc-cache -v
+    echo -e "${GREEN}Fuentes instaladas.${ENDCOLOR}"
+}
+
+install_kitty() {
+    echo -en "${BLUE}Instalando kitty...${ENDCOLOR}"
+    sleep 1.5
+    mkdir -p /opt/kitty
+    kitty_last=$(curl -s -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
+    wget -q https://github.com/kovidgoyal/kitty/releases/download/v$kitty_last/kitty-$kitty_last-linux-x86_64.txz -O /opt/kitty/
+    cd /opt/kitty
+    7z x kitty-$kitty_last-linux-x86_64.txz && rm -f kitty-$kitty_last-linux-x86_64.txz
+    tar -xf kitty-$kitty_last-linux-x86_64.tar && rm -f kitty-$kitty_last-linux-x86_64.tar
+
+    cp $MAIN_DIR/Config/kitty/kitty.conf $CONFIG_DIR/kitty/kitty.conf
+    cp $MAIN_DIR/Config/kitty/colors.ini $CONFIG_DIR/kitty/colors.ini
+    cp $MAIN_DIR/Config/kitty/kitty.conf /root/.config/kitty/kitty.conf
+    cp $MAIN_DIR/Config/kitty/colors.ini /root/.config/kitty/colors.ini
+    ln -s $CONFIG_DIR/kitty/kitty.conf /root/.config/kitty/kitty.conf
+    ln -s $CONFIG_DIR/kitty/colors.ini /root/.config/kitty/colors.ini
+    echo -e "${GREEN}Listo.${ENDCOLOR}"
+}
+
+# Función para instalar P10K
+install_p10k() {
+    echo -en "${BLUE}Instalando P10K y plugins ZSH...${ENDCOLOR}"
+    sleep 1.5
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+    sudo git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
+
+    cp -rf $MAIN_DIR/Config/p10k/p10k.zsh ~/.p10k.zsh
+    sudo cp -rf $MAIN_DIR/Config/p10k/root-p10k.zsh /root/.p10k.zsh
+
+    echo -e "${GREEN}P10K instalado.${ENDCOLOR}"
+}
+
+# Función para configurar ZSH
+configure_zsh() {
+    echo -en "${BLUE}Configurando ZSH...${ENDCOLOR}"
+    sleep 1.5
+    cp -v $MAIN_DIR/Config/zsh/zshrc ~/.zshrc
+    sudo cp -v $MAIN_DIR/Config/zsh/zshrc /root/.zshrc
+    sudo ln -s -f ~/.zshrc /root/.zshrc
+
+    chown root:root /usr/local/share/zsh/site-functions/_bspc
+
+    sudo mkdir /usr/share/zsh-sudo
+    sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh -O /usr/share/zsh-sudo/sudo.plugin.zsh
+
+    sudo usermod --shell /usr/bin/zsh root
+    echo -e "${GREEN}ZSH configurado.${ENDCOLOR}"
+}
+
+# Función para instalar Bat, LSD y fzf
 install_custom_bins() {
     # Obtener la última versión de bat
     bat_last=$(curl -s -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
@@ -127,144 +215,74 @@ install_custom_bins() {
     wget -q https://github.com/lsd-rs/lsd/releases/latest/download/lsd_$lsd_last\_amd64.deb
     sudo dpkg -i lsd_$lsd_last\_amd64.deb
 
-    # Obtener la última versión de kitty
-    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-
     # Install fzf
-    git clone -q --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    ~/.fzf/install --all &>/dev/null
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install --all
     sudo git clone -q --depth 1 https://github.com/junegunn/fzf.git /root/.fzf
-    sudo /root/.fzf/install --all &>/dev/null
+    sudo /root/.fzf/install --all
 
     echo -e "${GREEN}Kitty, Bat, LSD y fzf instalados.${ENDCOLOR}"
-}
-
-# Función para instalar BSPWM, SXHKD, Polybar y Picom
-install_window_manager() {
-    # Install bspwm
-    echo -en "${BLUE}Instalando bspwm...${ENDCOLOR}"
-    sleep 1.5
-    cd $GITHUB_DIR/bspwm
-    make -s -j$(nproc)
-    sudo make install
-    sudo apt-get install bspwm -yqq
-    echo -e "${GREEN}Listo.${ENDCOLOR}"
-
-    # Install sxhkd
-    echo -en "${BLUE}Instalando sxhkd...${ENDCOLOR}"
-    sleep 1.5
-    cd $GITHUB_DIR/sxhkd
-    make -s -j$(nproc)
-    sudo make install
-    echo -e "${GREEN}Listo.${ENDCOLOR}"
-
-    # Install polybar
-    echo -en "${BLUE}Instalando polybar...${ENDCOLOR}"
-    cd $GITHUB_DIR/polybar
-    mkdir build
-    cd build
-    cmake ..
-    make -j$(nproc)
-    # Optional. This will install the polybar executable in /usr/bin
-    sudo make install
-    echo -e "${GREEN}Listo.${ENDCOLOR}"
-
-    # Install picom
-    echo -en "${BLUE}Instalando picom...${ENDCOLOR}"
-    sleep 1.5
-    cd $GITHUB_DIR/picom
-    meson setup --buildtype=release build
-    ninja -C build
-    ninja -C build install
-    echo -e "${GREEN}Listo.${ENDCOLOR}"
-}
-
-install_fonts() {
-    echo -en "${BLUE}Instalando las fuentes...${ENDCOLOR}"
-    sleep 1.5
-    sudo cp $MAIN_DIR/fonts/HNF/* /usr/local/share/fonts/
-    sudo mkdir /usr/share/fonts/truetype/HNF && sudo cp $MAIN_DIR/fonts/HNF/* /usr/share/fonts/truetype/HNF
-    echo -e "${GREEN}Fuentes instaladas.${ENDCOLOR}"
 }
 
 # Función para copiar configuraciones
 copy_config_files() {
     echo -en "${BLUE}Copiando archivos de configuración...${ENDCOLOR}"
     sleep 1.5
-    cp -rv $MAIN_DIR/Config/* $CONFIG_DIR/
-    sudo cp -rv $MAIN_DIR/Config/kitty $CONFIG_DIR/
-    sudo cp -rv $MAIN_DIR/Config/kitty /root/.config/
-    rm -rf ~/.zshrc
-    cp -v $MAIN_DIR/zshrc ~/.zshrc
-    cp -v $MAIN_DIR/p10k.zsh ~/.p10k.zsh
-    sudo cp -v $MAIN_DIR/root-p10k.zsh /root/.p10k.zsh
+
     mkdir -p ~/.config/rofi
     cp -r $MAIN_DIR/rofi/* ~/.config/rofi/
     rofi-theme-selector
-    cp -v $MAIN_DIR/Wallpaper/* ~/Wallpaper
+    # Wallpaper
+    cp -v $MAIN_DIR/Wallpapers/* ~/Wallpapers
     echo "# WALLPAPER" >>~/.config/bspwm/bspwmrc
-    echo "feh --bg-fill ~/Wallpaper/death.jpg &" >>~/.config/bspwm/bspwmrc
+    echo "feh --bg-fill ~/Wallpapers/death.jpg &" >>~/.config/bspwm/bspwmrc
 
     echo -e "${GREEN}Archivos de configuración copiados.${ENDCOLOR}"
 }
 
-# Función para instalar P10K
-install_p10k() {
-    echo -en "${BLUE}Instalando P10K y plugins ZSH...${ENDCOLOR}"
-    sleep 1.5
-    git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
-    echo 'source ~/.powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
-    sudo git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
-
-    echo -e "${GREEN}P10K instalado.${ENDCOLOR}"
-}
-
-# Instalando ZSH plugins
-install_zsh_plugins() {
-    echo -en "${BLUE}Instalando plugins ZSH...${ENDCOLOR}"
-    sudo mkdir /usr/share/zsh-sudo
-    sudo wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh -O /usr/share/zsh-sudo/sudo.plugin.zsh
-    echo 'source /usr/share/zsh-sudo/sudo.plugin.zsh' >>~/.zshrc
-    #cd /usr/share
-    #sudo git clone -q --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git
-    echo -e "${GREEN}Listo.${ENDCOLOR}"
-}
-
-#Cambiar a Zsh y asignar permisos
-permissions_shell() {
-    echo -e "${BLUE}Cambiando terminal a ZSH${ENDCOLOR}"
-    chsh -s /usr/bin/zsh
-    sudo usermod --shell /usr/bin/zsh root
-    sudo ln -s -fv ~/.zshrc /root/.zshrc
-    echo -e "${GREEN}Listo.${ENDCOLOR}"
-
-    chmod u+x ~/.config/bspwm/bspwmrc
-    chmod u+x ~/.config/sxhkd/sxhkdrc
-    chmod +x ~/.config/bin/ethernet_status.sh
-    chmod +x ~/.config/bin/htb_status.sh
-    chmod +x ~/.config/bin/htb_target.sh
-    chmod +x ~/.config/polybar/launch.sh
-    chmod +x ~/.config/polybar/scripts/*.sh
-}
-
 # Instalar Nvim + Nvchad
 install_nvim() {
-    echo -en "${BLUE}Instalando Nvchad...${ENDCOLOR}"
+    echo -en "${BLUE}Instalando Nvim...${ENDCOLOR}"
     sudo apt remove neovim -y
-    sudo rm -rf ~/.config/nvim
-    sudo rm -rf ~/.local/share/nvim
-    cd /opt/
-    sudo wget -q -P /opt/ https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-    sudo tar xzvf nvim-linux64.tar.gz
-    sudo rm -f nvim-linux64.tar.gz
-    git clone -q https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
-    sudo cp -r ~/.config/nvim /root/.config
+    sudo apt remove nvim -y
+
+    git clone https://github.com/NvChad/starter ~/.config/nvim
+
+    mkdir -p /opt/nvim
+    nvim_last=$(curl -s -L https://github.com/neovim/neovim/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
+    wget -q https://github.com/neovim/neovim/releases/download/v$nvim_last/nvim-linux64.tar.gz -O /opt/nvim/
+    cd /opt/nvim
+    tar -xf nvim-linux64.tar.gz && rm -f nvim-linux64.tar.gz
+
+    sudo mkdir -p /root/.config/nvim
+    sudo cp -r ~/.config/nvim/* /root/.config/nvim/
+
+    # vim.opt.listchars = "tab:»·,trail:·"
+    # :MasonInstallAll
+    # Themes ESC + Space + th
+    # Ctrl + n Lista de directorios
+    # Esc + Space + ff Buscar por archivos especificos
+    # Esc + ch Cheatsheet de comandos
+
     echo -e "${GREEN}Listo.${ENDCOLOR}"
+}
+
+install_rofi_themes() {
+    echo -en "${BLUE}Instalando temas de Rofi...${ENDCOLOR}"
+    mkdir -p $ROFI_THEME_DIR
+    cp -r $GITHUB_DIR/rofi-themes-collection/themes/* $ROFI_THEME_DIR/
+    rofi-theme-selector
+    echo -e "${GREEN}Listo.${ENDCOLOR}"
+
+}
+
+locate() {
+    updatedb
 }
 
 # Eliminando restos
 clean() {
-    echo -en "${BLUE}Limpiando restos...    ${ENDCOLOR}"
+    echo -en "${BLUE}Limpiando restos...${ENDCOLOR}"
     rm -rf $GITHUB_DIR
     rm -rf $MAIN_DIR
     echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -299,17 +317,19 @@ main() {
     check_command git
     install_packages
     download_repositories
-    install_custom_bins
-    install_window_manager
+    install_bspwm+sxhkd
+    install_picom
     install_fonts
-    copy_config_files
+    install_kitty
     install_p10k
-    install_zsh_plugins
-    permissions_shell
+    configure_zsh
+    install_custom_bins
+    copy_config_files
     install_nvim
+    install_rofi_themes
+    locate
     clean
     restart
-    echo -e "${GREEN}Instalación completada exitosamente.${ENDCOLOR}"
 }
 
 main "$@"
