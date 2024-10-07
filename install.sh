@@ -275,6 +275,7 @@ install_rofi_themes() {
 }
 
 locate() {
+    echo -e "${BLUE}Actualizando base de datos...${ENDCOLOR}"
     #updatedb
 }
 
