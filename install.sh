@@ -73,14 +73,14 @@ PAKAGE_COMMON="libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-u
 # Funcion instalar paquetes necesarios
 install_package() {
     echo -e "${BLUE}[ ] Instalando ${MAGENTA}$1...${ENDCOLOR}"
-    if sudo $PAKAGE_MANAGER install -yqq --allow-downgrades "$1"; then
+    if sudo $PAKAGE_MANAGER install -y -qq "$1" >/dev/null 2>&1; then
         echo -e "${GREEN}[+] Se ha instalado $1${ENDCOLOR}"
     else
         echo -e "${RED}[!] Fallo al instalar $1.${ENDCOLOR}" && exit 1
     fi
 }
 
-install_packages() {
+install_dependencies() {
 
     #Actualiazar paquetes
     echo -e "${BLUE}[ ] Actualizando la lista de paquetes...${ENDCOLOR}"
@@ -91,7 +91,7 @@ install_packages() {
     sleep 3
 
     # Comando para instalar los paquetes necesarios
-    echo -e "${BLUE}Buscando Paquetes necesarios...${ENDCOLOR}"
+    echo -e "${YELLOW}Buscando Paquetes necesarios...${ENDCOLOR}"
     for package in $PAKAGE_COMMON; do
         if ! dpkg -l | grep -q " $package "; then
             install_package "$package"
@@ -103,9 +103,9 @@ install_packages() {
 
 # Función para descargar los repositorios
 download_repositories() {
+    echo -e "${BLUE}Descargando Repositorios...${ENDCOLOR}"
     mkdir -p $GITHUB_DIR
     cd $GITHUB_DIR
-    echo -e "${BLUE}Descargando Repositorios... ${ENDCOLOR}"
     sleep 1.5
     git clone -q https://github.com/baskerville/bspwm.git
     git clone -q https://github.com/baskerville/sxhkd.git
@@ -119,8 +119,8 @@ download_repositories() {
 install_bspwm+sxhkd() {
     echo -e "${BLUE}Instalando bspwm y sxhkd...${ENDCOLOR}"
     sleep 1.5
-    cd $GITHUB_DIR/bspwm && make && sudo make install
-    cd $GITHUB_DIR/sxhkd && make && sudo make install
+    cd $GITHUB_DIR/bspwm && make >/dev/null 2>&1 && sudo make install >/dev/null 2>&1
+    cd $GITHUB_DIR/sxhkd && make >/dev/null 2>&1 && sudo make install >/dev/null 2>&1
     mkdir ~/.config/{bspwm,sxhkd}
     cp $MAIN_DIR/Config/bspwm/bspwmrc ~/.config/bspwm/bspwmrc
     cp $MAIN_DIR/Config/sxhkd/sxhkdrc ~/.config/sxhkd/sxhkdrc
@@ -128,6 +128,7 @@ install_bspwm+sxhkd() {
     mkdir ~/.config/bspwm/scripts
     cp $MAIN_DIR/Config/bspwm/scripts/* ~/.config/bspwm/scripts/
     chmod +x ~/.config/bspwm/scripts/*.sh
+    chmod +x ~/.config/bspwm/scripts/bspwm_resize
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 }
 
@@ -143,8 +144,7 @@ install_picom() {
 install_fonts() {
     echo -e "${BLUE}Instalando las fuentes...${ENDCOLOR}"
     sleep 1.5
-    sudo cp $MAIN_DIR/fonts/HNF/* /usr/local/share/fonts/
-    #
+    sudo mkdir /usr/local/share/fonts/HNF && sudo cp $MAIN_DIR/fonts/HNF/* /usr/local/share/fonts/HNF/
     sudo mkdir /usr/share/fonts/truetype/Polybar && sudo cp $MAIN_DIR/fonts/Polybar/* /usr/share/fonts/truetype/Polybar
     fc-cache -v
     echo -e "${GREEN}Fuentes instaladas.${ENDCOLOR}"
@@ -153,33 +153,28 @@ install_fonts() {
 install_kitty() {
     echo -e "${BLUE}Instalando kitty...${ENDCOLOR}"
     sleep 1.5
-    sudo mkdir -p /opt/kitty
-    cd /opt/kitty
+    sudo mkdir -p /opt/kitty && cd /opt/kitty
     kitty_last=$(curl -s -L https://github.com/kovidgoyal/kitty/releases/latest/ | grep "<title>Release v" | awk '{ print $3 }')
     sudo wget -q https://github.com/kovidgoyal/kitty/releases/download/v$kitty_last/kitty-$kitty_last-x86_64.txz
     sudo 7z x kitty-$kitty_last-x86_64.txz && sudo rm -f kitty-$kitty_last-x86_64.txz
     sudo tar -xf kitty-$kitty_last-x86_64.tar && sudo rm -f kitty-$kitty_last-x86_64.tar
 
-    mkdir -p $CONFIG_DIR/kitty
-    sudo mkdir -p /root/.config/kitty
-    cp $MAIN_DIR/Config/kitty/kitty.conf $CONFIG_DIR/kitty/kitty.conf
-    cp $MAIN_DIR/Config/kitty/color.ini $CONFIG_DIR/kitty/color.ini
-    sudo cp $MAIN_DIR/Config/kitty/kitty.conf /root/.config/kitty/kitty.conf
-    sudo cp $MAIN_DIR/Config/kitty/color.ini /root/.config/kitty/color.ini
-    sudo ln -s -f $CONFIG_DIR/kitty/kitty.conf /root/.config/kitty/kitty.conf
-    sudo ln -s -f $CONFIG_DIR/kitty/color.ini /root/.config/kitty/color.ini
+    mkdir -p $CONFIG_DIR/kitty && sudo mkdir -p /root/.config/kitty
+    cp $MAIN_DIR/Config/kitty/kitty.conf $CONFIG_DIR/kitty/kitty.conf && sudo cp $MAIN_DIR/Config/kitty/kitty.conf /root/.config/kitty/kitty.conf
+    cp $MAIN_DIR/Config/kitty/color.ini $CONFIG_DIR/kitty/color.ini && sudo cp $MAIN_DIR/Config/kitty/color.ini /root/.config/kitty/color.ini
+    sudo ln -s -f $CONFIG_DIR/kitty/kitty.conf /root/.config/kitty/kitty.conf && sudo ln -s -f $CONFIG_DIR/kitty/color.ini /root/.config/kitty/color.ini
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 }
 
 # Función para instalar P10K
 install_p10k() {
-    echo -e "${BLUE}Instalando P10K y plugins ZSH...${ENDCOLOR}"
+    echo -e "${BLUE}Instalando P10K...${ENDCOLOR}"
     sleep 1.5
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-    sudo git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.powerlevel10k
+    sudo git clone -q --depth=1 https://github.com/romkatv/powerlevel10k.git /root/powerlevel10k
 
-    cp -rf $MAIN_DIR/Config/p10k/p10k.zsh ~/.p10k.zsh
-    sudo cp -rf $MAIN_DIR/Config/p10k/root-p10k.zsh /root/.p10k.zsh
+    cp -rf $MAIN_DIR/Config/p10k/.p10k.zsh ~/.p10k.zsh
+    sudo cp -rf $MAIN_DIR/Config/.p10k/root-p10k.zsh /root/.p10k.zsh
 
     echo -e "${GREEN}P10K instalado.${ENDCOLOR}"
 }
@@ -188,8 +183,7 @@ install_p10k() {
 configure_zsh() {
     echo -e "${BLUE}Configurando ZSH...${ENDCOLOR}"
     sleep 1.5
-    cp -v $MAIN_DIR/Config/zsh/zshrc ~/.zshrc
-    sudo cp -v $MAIN_DIR/Config/zsh/zshrc /root/.zshrc
+    cp -v $MAIN_DIR/Config/zsh/.zshrc ~/.zshrc && sudo cp -v $MAIN_DIR/Config/zsh/.zshrc /root/.zshrc
     sudo ln -s -f ~/.zshrc /root/.zshrc
 
     sudo chown root:root /usr/local/share/zsh/site-functions/_bspc
@@ -203,8 +197,10 @@ configure_zsh() {
 
 # Función para instalar Bat, LSD y fzf
 install_custom_bins() {
-    cd $MAIN_DIR
     echo -e "${BLUE}Instalando binarios...${ENDCOLOR}"
+    sleep 1.5
+    cd $MAIN_DIR
+
     # Obtener la última versión de bat
     bat_last=$(curl -s -L https://github.com/sharkdp/bat/releases/latest/ | grep "<title>Release v" | awk '{ print $2 }' | sed 's/v//')
     wget https://github.com/sharkdp/bat/releases/latest/download/bat_$bat_last\_amd64.deb
@@ -221,7 +217,7 @@ install_custom_bins() {
     sudo git clone -q --depth 1 https://github.com/junegunn/fzf.git /root/.fzf
     sudo /root/.fzf/install --all
 
-    echo -e "${GREEN}Listo${ENDCOLOR}"
+    echo -e "${GREEN}Listo.${ENDCOLOR}"
 }
 
 # Función para copiar configuraciones
@@ -230,6 +226,7 @@ copy_config_files() {
     sleep 1.5
 
     # Wallpaper
+    mkdir -p ~/Wallpapers
     cp -v $MAIN_DIR/Wallpapers/* ~/Wallpapers
     echo "# WALLPAPER" >>~/.config/bspwm/bspwmrc
     echo "feh --bg-fill ~/Wallpapers/death.jpg &" >>~/.config/bspwm/bspwmrc
@@ -298,7 +295,7 @@ restart() {
         REPLY=${REPLY:-"y"}
         if [[ $REPLY =~ ^[YySs]$ ]]; then
             echo -e "${GREEN}[+] Reiniciando el sistema...${ENDCOLOR}"
-            sleep -1
+            sleep 1
             sudo reboot
         elif [[ $REPLY =~ ^[Nn]$ ]]; then
             exit 0
@@ -314,7 +311,7 @@ main() {
     check_command wget
     check_command curl
     check_command git
-    install_packages
+    install_dependencies
     download_repositories
     install_bspwm+sxhkd
     install_picom
