@@ -135,7 +135,7 @@ install_bspwm+sxhkd() {
 install_picom() {
     echo -e "${BLUE}Instalando picom...${ENDCOLOR}"
     sleep 1.5
-    cd $GITHUB_DIR/picom && meson setup --buildtype=release build && ninja -C build && ninja -C build install
+    cd $GITHUB_DIR/picom && meson setup --buildtype=release build && ninja -C build && sudo ninja -C build install
     mkdir $CONFIG_DIR/picom
     cp $MAIN_DIR/Config/picom/* $CONFIG_DIR/picom/
     echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -257,7 +257,7 @@ install_nvim() {
     # Themes ESC + Space + th
     # Ctrl + n Lista de directorios
     # Esc + Space + ff Buscar por archivos especificos
-    # Esc + ch Cheatsheet de comandos
+    # Esc + Space ch Cheatsheet de comandos
 
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 }
@@ -268,7 +268,6 @@ install_rofi_themes() {
     cp -r $GITHUB_DIR/rofi-themes-collection/themes/* $ROFI_THEME_DIR/
     rofi-theme-selector
     echo -e "${GREEN}Listo.${ENDCOLOR}"
-
 }
 
 locate() {

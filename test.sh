@@ -79,7 +79,7 @@ install_bspwm+sxhkd() {
 install_picom() {
     echo -e "${BLUE}instalando picom...${ENDCOLOR}"
     sleep 1.5
-    cd $GITHUB_DIR/picom && meson setup --buildtype=release build && ninja -C build && ninja -c build install
+    cd $GITHUB_DIR/picom && meson setup --buildtype=release build && ninja -C build && sudo ninja -c build install
     mkdir $CONFIG_DIR/picom
     cp $MAIN_DIR/Config/picom/* $CONFIG_DIR/picom
     echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -184,6 +184,46 @@ copy_config_files() {
     echo -e "${GREEN}Archivos de configuración copiados.${ENDCOLOR}"
 }
 
+install_nvim() {
+    echo -e "${GREEN}Instalando Neovim + NVChad...${ENDCOLOR}"
+    sudo apt remove neovim -y
+    sudo apt remove nvim -y
+
+    git clone https://github.com/NvChad/starter ~/.config/nvim
+    sudo mkdir -p /root/.config/nvim
+    sudo cp -r ~/.config/nvim/* /root/.config/nvim/
+
+    sudo mkdir -p /opt/nvim
+    cd /opt/nvim
+    nvim_last=$(curl -s -L https://github.com/neovim/neovim/releases/latest/ | grep "<title>Release Nvim" | awk '{ print $3 }')
+    sudo wget -q https://github.com/neovim/neovim/releases/download/v$nvim_last/nvim-linux64.tar.gz
+    sudo tar -xf nvim-linux64.tar.gz && sudo rm -f nvim-linux64.tar.gz
+
+    # vim.opt.listchars = "tab:»·,trail:·"
+    # :MasonInstallAll
+    # Themes ESC + Space + th
+    # Ctrl + n Lista de directorios
+    # Esc + Space + ff Buscar por archivos especificos
+    # Esc + Sapce ch Cheatsheet de comandos
+
+    echo -e "${GREEN}Listo.${ENDCOLOR}"
+}
+
+install_rofi_themes() {
+    echo -e "${BLUE}Instalando temas de Rofi...${ENDCOLOR}"
+    mkdir -p $ROFI_THEME_DIR
+    cp -r $GITHUB_DIR/rofi-themes-collection/themes/* $ROFI_THEME_DIR/
+    rofi-theme-selector
+    echo -e "${GREEN}Listo.${ENDCOLOR}"
+}
+
+clean() {
+    echo -e "${BLUE}Limpiando restos...${ENDCOLOR}"
+    rm -rf $GITHUB_DIR
+    rm -rf $MAIN_DIR
+    echo -e "${GREEN}Listo.${ENDCOLOR}"
+}
+
 main() {
     install_dependencies
     download_repositories
@@ -195,7 +235,10 @@ main() {
     configure_zsh
     install_custom_bins
     copy_config_files
+    install_nvim
+    install_rofi_themes
+    clean
 }
 
 main "$@"
-echo -e "${MAGENTA}Instaladas dependencias con exito${ENDCOLOR}"
+echo -e "${MAGENTA}Instalado con exito${ENDCOLOR}"
