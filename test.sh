@@ -88,7 +88,7 @@ install_picom() {
 install_fonts() {
     echo -e "${BLUE}Instalalndo las fuentes...${ENDCOLOR}"
     sleep 1.5
-    sudo mkdir /usr/local/share/fonts/HNF sudo cp $MAIN_DIR/fonts/HNF/* /usr/local/share/fonts/
+    sudo mkdir /usr/local/share/fonts/HNF && sudo cp $MAIN_DIR/fonts/HNF/* /usr/local/share/fonts/
     sudo mkdir /usr/share/fonts/truetype/Polybar && sudo cp $MAIN_DIR/fonts/Polybar/* /usr/share/fonts/truetype/Polybar
     fc-cache -v
 }
