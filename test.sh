@@ -211,8 +211,8 @@ install_nvim() {
 
 install_rofi_themes() {
     echo -e "${BLUE}Instalando temas de Rofi...${ENDCOLOR}"
-    mkdir -p $ROFI_THEME_DIR
-    cp -r $GITHUB_DIR/rofi-themes-collection/themes/* $ROFI_THEME_DIR/
+    mkdir -p $CONFIG_DIR/rofi/themes
+    cp -r $GITHUB_DIR/rofi-themes-collection/themes/* $CONFIG_DIR/rofi/themes/
     rofi-theme-selector
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 }
