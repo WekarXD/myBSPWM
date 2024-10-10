@@ -10,12 +10,51 @@ CYAN="\e[36m"
 WHITE="\e[97m"
 ENDCOLOR="\e[0m"
 
+# Variables
+
 PAKAGE_COMMON="libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libepoxy-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev meson ninja-build uthash-dev cmake polybar bspwm rofi zsh imagemagick feh locate"
 
-PAKAGE_MANAGER="apt-get"
 GITHUB_DIR=~/github
 MAIN_DIR=~/myBSPWM
 CONFIG_DIR=~/.config
+
+# Obtener el sistema operativo
+OS_NAME=$(grep '^NAME=' /etc/os-release | cut -d'=' -f2 | tr -d '"')
+
+# Obtener el Package manager
+if grep -q "Ubuntu" /etc/os-release || grep -q "Debian" /etc/os-release || grep -q "Parrot" /etc/os-release; then
+    PAKAGE_MANAGER="apt-get"
+elif grep -q "Fedora" /etc/os-release; then
+    PAKAGE_MANAGER="dnf"
+elif grep -q "CentOS" /etc/os-release || grep -q "Red Hat" /etc/os-release; then
+    PAKAGE_MANAGER="yum"
+elif grep -q "Arch" /etc/os-release; then
+    PAKAGE_MANAGER="pacman"
+elif grep -q "openSUSE" /etc/os-release; then
+    PAKAGE_MANAGER="zypper"
+elif grep -q "Alpine" /etc/os-release; then
+    PAKAGE_MANAGER="apk"
+else
+    PAKAGE_MANAGER="unknown"
+fi
+
+# Funcion comprobar la compatibilidad
+if [ "$PAKAGE_MANAGER" != "apt-get" ]; then
+    echo -e "${RED}[!] El sistema operativo no es compatible${ENDCOLOR}"
+    exit 2
+fi
+
+# Funcion actualizar el sistema
+update_system() {
+    if [[ "$OS_NAME" == *"Parrot"* && "$PAKAGE_MANAGER" == "apt-get" ]]; then
+        echo -e "${BLUE}[ ] Actualizando el sitema Parrot...${ENDCOLOR}"
+        sudo apt update && sudo parrot-upgrade -y
+    else
+        echo -e "${BLUE}[ ] Actualizando el sitema...${ENDCOLOR}"
+        sudo apt update && sudo apt upgrade -y
+    fi
+    sleep 3
+}
 
 install_package() {
     echo -e "${BLUE}[ ] Instalando ${MAGENTA}$1...${ENDCOLOR}"
@@ -79,7 +118,7 @@ install_bspwm+sxhkd() {
 install_picom() {
     echo -e "${BLUE}instalando picom...${ENDCOLOR}"
     sleep 1.5
-    cd $GITHUB_DIR/picom && meson setup --buildtype=release build && ninja -C build && sudo ninja -c build install
+    cd $GITHUB_DIR/picom && meson setup --buildtype=release build && ninja -C build && sudo ninja -C build install
     mkdir $CONFIG_DIR/picom
     cp $MAIN_DIR/Config/picom/* $CONFIG_DIR/picom
     echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -225,6 +264,7 @@ clean() {
 }
 
 main() {
+    update_system
     install_dependencies
     download_repositories
     install_bspwm+sxhkd
@@ -241,4 +281,21 @@ main() {
 }
 
 main "$@"
-echo -e "${MAGENTA}Instalado con exito${ENDCOLOR}"
+
+notify-send -e "Instalación completa
+Hay que reiniciar y cambiar el entorno a bspwm"
+
+while true; do
+    echo -e "${PURPLE}[?] Es necesario reiniciar el sistema. ¿Deseas reiniciar ahora?${ENDCOLOR}"
+    read -r
+    REPLY=${REPLY:-"y"}
+    if [[ $REPLY =~ ^[YySs]$ ]]; then
+        echo -e "${GREEN}[+] Reiniciando el sistema...${ENDCOLOR}"
+        sleep 1
+        sudo reboot
+    elif [[ $REPLY =~ ^[Nn]$ ]]; then
+        exit 0
+    else
+        echo -e "${RED}[!] Respuesta invalida, responda otra vez.${ENDCOLOR}"
+    fi
+done
