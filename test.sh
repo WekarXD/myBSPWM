@@ -14,9 +14,9 @@ ENDCOLOR="\e[0m"
 
 PAKAGE_COMMON="libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libepoxy-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev meson ninja-build uthash-dev cmake polybar bspwm rofi zsh imagemagick feh locate"
 
-GITHUB_DIR=~/github
-MAIN_DIR=~/myBSPWM
-CONFIG_DIR=~/.config
+GITHUB_DIR=$HOME/github
+MAIN_DIR=$HOME/myBSPWM
+CONFIG_DIR=$HOME/.config
 
 # Obtener el sistema operativo
 OS_NAME=$(grep '^NAME=' /etc/os-release | cut -d'=' -f2 | tr -d '"')
@@ -105,13 +105,13 @@ install_bspwm+sxhkd() {
     sleep 1.5
     cd $GITHUB_DIR/bspwm && make && sudo make install
     cd $GITHUB_DIR/sxhkd && make && sudo make install
-    mkdir ~/.config/{bspwm,sxhkd}
-    cp $MAIN_DIR/Config/bspwm/bspwmrc ~/.config/bspwm/bspwmrc
-    cp $MAIN_DIR/Config/sxhkd/sxhkdrc ~/.config/sxhkd/sxhkdrc
-    chmod u+x ~/.config/bspwm/bspwmrc
-    mkdir ~/.config/bspwm/scripts
-    cp $MAIN_DIR/Config/bspwm/scripts/* ~/.config/bspwm/scripts/
-    chmod +x ~/.config/bspwm/scripts/*.sh
+    mkdir $CONFIG_DIR/{bspwm,sxhkd}
+    cp $MAIN_DIR/Config/bspwm/bspwmrc $CONFIG_DIR/bspwm/bspwmrc
+    cp $MAIN_DIR/Config/sxhkd/sxhkdrc $CONFIG_DIR/sxhkd/sxhkdrc
+    chmod u+x $CONFIG_DIR/bspwm/bspwmrc
+    mkdir $CONFIG_DIR/bspwm/scripts
+    cp $MAIN_DIR/Config/bspwm/scripts/* $CONFIG_DIR/bspwm/scripts/
+    chmod +x $CONFIG_DIR/bspwm/scripts/*.sh
     echo -e "${GREEN}Listo.${ENDCOLOR}"
 }
 
@@ -158,10 +158,10 @@ install_kitty() {
 install_p10k() {
     echo -e "${BLUE}Instalando P10k...${ENDCOLOR}"
     sleep 1.5
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/powerlevel10k
     sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/powerlevel10k
 
-    cp -rf $MAIN_DIR/Config/p10k/.p10k.zsh ~/.p10k.zsh
+    cp -rf $MAIN_DIR/Config/p10k/.p10k.zsh $HOME/.p10k.zsh
     sudo cp -rf $MAIN_DIR/Config/p10k/.root-p10k.zsh /root/.p10k.zsh
 
     echo -e "${GREEN}Listo.${ENDCOLOR}"
@@ -170,8 +170,8 @@ install_p10k() {
 configure_zsh() {
     echo -e "${BLUE}Configurando ZSH...${ENDCOLOR}"
     sleep 1.5
-    cp -v $MAIN_DIR/Config/zsh/.zshrc ~/.zshrc && sudo cp -v $MAIN_DIR/Config/zsh/.zshrc /root/.zshrc
-    sudo ln -s -f ~/.zshrc /root/.zshrc
+    cp -v $MAIN_DIR/Config/zsh/.zshrc $HOME/.zshrc && sudo cp -v $MAIN_DIR/Config/zsh/.zshrc /root/.zshrc
+    sudo ln -s -f $HOME/.zshrc /root/.zshrc
 
     sudo chown root:root /usr/local/share/zsh/site-functions/_bspc
 
@@ -197,7 +197,7 @@ install_custom_bins() {
     sudo dpkg -i lsd_$lsd_last\_amd64.deb
 
     # Install fzf
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
     ~/.fzf/install --all
     sudo git clone -q --depth 1 https://github.com/junegunn/fzf.git /root/.fzf
     sudo /root/.fzf/install --all
@@ -215,10 +215,9 @@ copy_config_files() {
 
     # Wallpaper
     mkdir ~/Wallpapers
-    cp $MAIN_DIR/Wallpapers/* ~/Wallpapers
-    echo -e "\n" >>~/.config/bspwm/bspwmrc
-    echo "# WALLPAPER" >>~/.config/bspwm/bspwmrc
-    echo "feh --bg-fill ~/Wallpapers/death.jpg &" >>~/.config/bspwm/bspwmrc
+    cp $MAIN_DIR/Wallpapers/* $HOME/Wallpapers
+    echo "# WALLPAPER" >>$CONFIG_DIR/bspwm/bspwmrc
+    echo "feh --bg-fill $HOME/Wallpapers/death.jpg &" >>$CONFIG_DIR/bspwm/bspwmrc
 
     echo -e "${GREEN}Archivos de configuración copiados.${ENDCOLOR}"
 }
@@ -228,9 +227,9 @@ install_nvim() {
     sudo apt remove neovim -y
     sudo apt remove nvim -y
 
-    git clone https://github.com/NvChad/starter ~/.config/nvim
+    git clone https://github.com/NvChad/starter $CONFIG_DIR/nvim
     sudo mkdir -p /root/.config/nvim
-    sudo cp -r ~/.config/nvim/* /root/.config/nvim/
+    sudo cp -r $CONFIG_DIR/nvim/* /root/.config/nvim/
 
     sudo mkdir -p /opt/nvim
     cd /opt/nvim
