@@ -93,7 +93,7 @@ super + ctrl + alt + {left,down,up,right}
     bspc node -p {west,south,north,east}
 
 # preselect the ratio
-super + ctrl + {1-9}
+super + ctrl + alt + {1-9}
     bspc node -o 0.{1-9}
 
 # cancel the preselection for the focused node
