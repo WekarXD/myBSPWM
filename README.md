@@ -33,19 +33,19 @@ Este script instalará y configurará automáticamente todos los archivos necesa
 
 A continuación, se muestra una lista de atajos de teclado preconfigurados para navegar y gestionar ventanas en tu entorno BSPWM. Estos atajos utilizan la tecla Windows como modificador principal.
 
-| Combianción de teclas                                     | Acción                                                     |
-| --------------------------------------------------------- | ---------------------------------------------------------- |
-| <kbd>Windows</kbd> + <kbd>Enter</kbd>                     | Abrir la terminal **Kitty**                                |
-| <kbd>Windows</kbd> + <kbd>W</kbd>                         | Cerrar la ventana activa                                   |
-| <kbd>Windows</kbd> + <kbd>Alt</kbd> + <kbd>R</kbd>        | Recargar la configuración de BSPWM                         |
-| <kbd>Windows</kbd> + <kbd>Alt</kbd> + <kbd>Q</kbd>        | Cerrar sesión                                              |
-| <kbd>Windows</kbd> + <kbd>⬆⬅⬇➡</kbd>                      | Moverse entre las ventanas abiertas en la workspace actual |
-| <kbd>Windows</kbd> + <kbd>Alt</kbd> + <kbd>⬆⬅⬇➡</kbd>     | Redimensionar la ventana seleccionada                      |
-| <kbd>Windows</kbd> + <kbd>D</kbd>                         | Abrir el lanzador **Rofi** para búsqueda de aplicaciones   |
-| <kbd>Windows</kbd> + <kbd>1-9, 0</kbd>                    | Cambiar entre workspaces (espacios de trabajo)             |
-| <kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>1-9, 0</kbd> | Mover ventana actual a otro workspace                      |
-| <kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd>      | Abrir **Firefox**                                          |
-| <kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>      | Abrir **Burpsuite**                                        |
+| Combianción de teclas                                  | Acción                                                     |
+| ------------------------------------------------------ | ---------------------------------------------------------- |
+| <kbd>Windows</kbd> + <kbd>Enter</kbd>                  | Abrir la terminal **Kitty**                                |
+| <kbd>Windows</kbd> + <kbd>W</kbd>                      | Cerrar la ventana activa                                   |
+| <kbd>Windows</kbd> + <kbd>Alt</kbd> + <kbd>R</kbd>     | Recargar la configuración de BSPWM                         |
+| <kbd>Windows</kbd> + <kbd>Alt</kbd> + <kbd>Q</kbd>     | Cerrar sesión                                              |
+| <kbd>Windows</kbd> + <kbd>⬆⬅⬇➡</kbd>                   | Moverse entre las ventanas abiertas en la workspace actual |
+| <kbd>Windows</kbd> + <kbd>Alt</kbd> + <kbd>⬆⬅⬇➡</kbd>  | Redimensionar la ventana seleccionada                      |
+| <kbd>Windows</kbd> + <kbd>D</kbd>                      | Abrir el lanzador **Rofi** para búsqueda de aplicaciones   |
+| <kbd>Windows</kbd> + <kbd>0-9</kbd>                    | Cambiar entre workspaces (espacios de trabajo)             |
+| <kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>0-9</kbd> | Mover ventana actual a otro workspace                      |
+| <kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd>   | Abrir **Firefox**                                          |
+| <kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>   | Abrir **Burpsuite**                                        |
 
 ## Personalización
 
