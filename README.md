@@ -1,8 +1,12 @@
 # myBSPWM
 
-**myBSPWM** es un script que instala un tema personalizado para el gestor de ventanas [BSPWM](https://github.com/baskerville/bspwm), inspirado en el entorno de [s4vitar](https://github.com/s4vitar) y en el script de [PatxaSec](https://github.com/PatxaSec/myBSPWM). Este tema incluye configuraciones predefinidas para facilitar la navegación entre ventanas, el manejo de espacios de trabajo (workspaces), y la apertura rápida de aplicaciones esenciales.
+**myBSPWM** es un script que instala un tema personalizado para el gestor de ventanas [BSPWM](https://github.com/baskerville/bspwm), inspirado en el entorno de [s4vitar](https://github.com/s4vitar) y en el script de [PatxaSec](https://github.com/PatxaSec/myBSPWM).
 
-Actualmente, este tema ha sido probado y funciona correctamente en sistemas basados en Debian que utilizan el gestor de paquetes `apt`. Otros sistemas que usen diferentes gestores de paquetes podrían experimentar fallos durante la instalación.
+Este tema incluye configuraciones predefinidas para facilitar la navegación entre ventanas, el manejo de espacios de trabajo (workspaces), y la apertura rápida de aplicaciones esenciales.
+
+> [!NOTE]  
+> Este tema solo se ha probado en sistemas basados en Debian.
+> Por precaucion se ha desabilitado la instalacion para otros sistemas.
 
 ### Distribuciones Probadas
 
@@ -16,7 +20,7 @@ Este script ha sido comprobado en las siguientes distribuciones:
 
 Para instalar el tema, sigue estos pasos:
 
-```
+```bash
 git clone https://github.com/WekarXD/myBSPWM.git
 cd myBSPWM
 chmod +x install.sh
